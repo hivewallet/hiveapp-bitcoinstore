@@ -7,7 +7,7 @@ angular.module("hiveBitcoinstoreApp", [])
             templateUrl: "views/categories.html",
             controller: "CategoriesCtrl"
         })
-        .when("/products", {
+        .when("/categories/:category/products", {
             templateUrl: "views/products.html",
             controller: "ProductsCtrl"
         })
