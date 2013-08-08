@@ -4,12 +4,12 @@ angular.module("hiveBitcoinstoreApp", [])
     .config(function ($routeProvider) {
         $routeProvider
         .when("/", {
-            templateUrl: "views/categories.html",
-            controller: "CategoriesCtrl"
+            templateUrl: "views/category-list.html",
+            controller: "CategoryListCtrl"
         })
         .when("/categories/:category/products", {
-            templateUrl: "views/products.html",
-            controller: "ProductsCtrl"
+            templateUrl: "views/product-list.html",
+            controller: "ProductListCtrl"
         })
         .otherwise({
             redirectTo: "/"

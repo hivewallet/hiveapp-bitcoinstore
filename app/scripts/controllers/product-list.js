@@ -77,6 +77,6 @@ var productFixtures = {
 }
 
 angular.module("hiveBitcoinstoreApp")
-    .controller("ProductsCtrl", function ($scope) {
+    .controller("ProductListCtrl", function ($scope) {
         $scope.products = _.values(productFixtures);
     });
