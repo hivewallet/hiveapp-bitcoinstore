@@ -28,6 +28,15 @@
   color: #797C7F;
 }
 
+#category-list li:hover {
+  background-color:#3FC7F8;
+}
+
+#category-list li:hover a {
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
 .product-image {
   height: 200px;
   width: 200px;
