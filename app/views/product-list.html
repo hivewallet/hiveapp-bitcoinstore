@@ -4,8 +4,8 @@
       <th>Name</th>
       <th>Description</th>
     <tr ng-repeat="product in products">
-      <td>{{product.name}}</td>
-      <td>{{product.description}}</td>
+      <td><a href="#/products/{{product.entity_id}}">{{product.name}}</a></td>
+      <td>{{product.short_description}}</td>
     </tr>
   </table>
 </div>
