@@ -1,5 +1,7 @@
 <ul class="breadcrumb simple">
-  <li class="active">{{category}}</li>
+  <li class="active">
+    <a ng-href="#/categories/{{category}}/products">{{category}}</a>
+  </li>
 </ul>
 
 <p ng-hide="product">Loading product...</p>
