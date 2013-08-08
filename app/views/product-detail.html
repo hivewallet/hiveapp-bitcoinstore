@@ -1,5 +1,14 @@
+<ul class="breadcrumb">
+  <li><a href="#">Categories</a></li>
+  <li><a href="#/categories/{{category}}/products">{{category}}</a></li>
+  <li class="active">Product</li>
+</ul>
+
 <div class="panel">
   <div class="panel-heading">{{product.name}}</div>
+  <img class="product-image" ng-src="{{product.image_url}}">
   <p>{{product.description}}</p>
-  <p>{{product.final_price_with_tax}}</p>
+  <p class="text-muted">${{product.final_price_with_tax}}
+    <button class="btn btn-primary" ng-click="buy(product.entity_id)">Buy</button>
+  </p>
 </div>
