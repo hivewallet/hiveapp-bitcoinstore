@@ -6,3 +6,11 @@
 .pagination a {
   cursor: pointer;
 }
+
+#header-logo {
+  background: url("../images/header_mosaic.png") no-repeat scroll -101px 0 #E5E8E9;
+}
+
+#header-nav {
+  background-color: #229BD8;
+}

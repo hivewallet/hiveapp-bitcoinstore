@@ -8,10 +8,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="styles/bootstrap.css">
+    <link rel="stylesheet" href="styles/bootstrap-glyphicons.css">
     <link rel="stylesheet" href="styles/main.css">
-   <!-- endbuild -->
+    <!-- endbuild -->
   </head>
+
   <body ng-app="hiveBitcoinstoreApp">
+    <div class="container">
+      <div id="header-logo" class="row">
+        <div class="col-lg-12">
+          <img src="images/theme_logo.png">
+        </div>
+      </div>
+      <div id="header-nav" class="row">
+        <div class="col-lg-12">
+          <a href="#/" type="button" class="btn btn-default btn-sm">Catalog</a>
+          <a href="#/" type="button" class="btn btn-default btn-sm">
+            <i class="glyphicon glyphicon-search"></i> Search
+          </a>
+          <a href="#" type="button" class="btn btn-danger btn-sm">My cart</a>
+        </div>
+      </div>
+    </div>
+
     <div class="container" ng-view=""></div>
 
     <script src="bower_components/jquery/jquery.js"></script>

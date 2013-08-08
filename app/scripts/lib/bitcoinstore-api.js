@@ -12,4 +12,4 @@ var bitcoinstoreApi = {
         params = params || {};
         return $.getJSON(bitcoinstoreApi.host + "/products/" + productId, params);
     }
-}
+};
