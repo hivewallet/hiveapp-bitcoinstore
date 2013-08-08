@@ -50,21 +50,25 @@
   background-color: #e5e8e9;
 }
 
-#product-list .product-image {
-  height: 67px;
-  width: 67px;
-}
-
-#product-list .product-description {
+#product-list .product-name {
   color: #f12f23;
   text-decoration: underline;
 }
 
-#product-list .product-short-description {
-  font-size: 12px;
+/* Product details */
+.product .product-image {
+  height: 67px;
+  width: 67px;
 }
 
-.product-image {
-  height: 200px;
-  width: 200px;
+.product-action {
+  background-color: #E5E8E9;
+}
+
+#product-detail .product-name {
+  color: ##444;
+}
+
+.product .product-short-description {
+  font-size: 12px;
 }

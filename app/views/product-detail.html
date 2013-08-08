@@ -1,17 +1,51 @@
-<ul class="breadcrumb">
-  <li><a href="#">Categories</a></li>
-  <li><a href="#/categories/{{category}}/products">{{category}}</a></li>
-  <li class="active">Product</li>
+<ul class="breadcrumb simple">
+  <li class="active">{{category}}</li>
 </ul>
 
-<div class="panel">
-  <p ng-hide="product">Loading product...</p>
-  <div ng-show="product">
-    <div class="panel-heading">{{product.name}}</div>
-    <img class="product-image" ng-src="{{product.image_url}}">
-    <p>{{product.description}}</p>
-    <p class="text-muted">${{product.final_price_with_tax}}
-      <button class="btn btn-primary" ng-click="buy(product.entity_id)">Buy</button>
-    </p>
+<p ng-hide="product">Loading product...</p>
+
+<div id="product-detail" class="row product" ng-show="product">
+  <div class="col-2">
+    <img ng-src="{{product.image_url}}" alt="{{product.product_name}}" class="product-image">
   </div>
+
+  <div class="col-10">
+    <p class="product-name">
+      <strong>{{product.name}}</strong>
+    </p>
+    <div class="product-availability">
+      Availability: {{product.is_in_stock | inStock}}
+    </div>
+    <div class="product-btc-price">
+      {{product.final_price_with_tax | number:2}} BTC
+    </div>
+    <div class="product-price">
+      <strong>&#36;{{product.final_price_with_tax | number:2}}</strong>
+    </div>
+  </div>
+</div>
+
+<div class="row product-action">
+  <div class="col-4">
+    <div class="product-btc-price">
+      {{product.final_price_with_tax | number:2}} BTC
+    </div>
+    <div class="product-price">
+      <strong>&#36;{{product.final_price_with_tax | number:2}}</strong>
+    </div>
+  </div>
+  <div class="col-4">
+    Qty:
+    <input type="text">
+  </div>
+  <div class="col-4">
+    <a href="#" class="btn btn-danger">Add to cart</a>
+  </div>
+</div>
+
+<div class="row">
+  <h4>Details</h4>
+  <div>{{product.description}}</div>
+  <h4>Additional data</h4>
+  <div>{{product.marketing_information}}</div>
 </div>

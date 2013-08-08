@@ -6,13 +6,14 @@
 
 <ul id="product-list" class="list-group" ng-show="products.length">
   <li class="list-group-item" ng-repeat="product in products" ng-class-odd="'odd'" ng-class-even="'even'">
-    <div class="row">
+    <div class="row product">
       <div class="col-2">
         <img ng-src="{{product.image_url}}" alt="{{product.product_name}}" class="product-image">
       </div>
+
       <div class="col-10">
-        <a ng-href="#/categories/{{category}}/products/{{product.entity_id}}" class="product-description">
-          <strong>{{product.description}}</strong>
+        <a ng-href="#/categories/{{category}}/products/{{product.entity_id}}" class="product-name">
+          <strong>{{product.name}}</strong>
         </a>
         <div class="product-short-description">
           {{product.short_description}}
@@ -28,7 +29,7 @@
   </li>
 </ul>
 
-<ul class="pagination text-center">
+<ul class="pagination text-center" ng-show="products.length">
   <li ng-class="{active: currentPage == 1}">
     <a href="#/categories/{{category}}/products/{{product.entity_id}}?page={{currentPage - 1}}">Prev</a>
   </li>

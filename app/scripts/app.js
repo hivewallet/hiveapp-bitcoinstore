@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module("hiveBitcoinstoreApp", [])
+angular.module("hiveBitcoinstoreApp", ["btcstoreFilters"])
     .config(function ($routeProvider) {
         $routeProvider
         .when("/", {
