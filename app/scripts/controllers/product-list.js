@@ -3,7 +3,7 @@
 angular.module("hiveBitcoinstoreApp")
     .controller("ProductListCtrl", function ($scope, $routeParams) {
         $scope.category = $routeParams.category;
-        $scope.currentPage = 1;
+        $scope.currentPage = parseInt($routeParams.page || 1);
 
         // TODO: add some spinner - sometimes it takes lot of time to load products
         $scope.getPage = function (page) {

@@ -5,10 +5,13 @@
 </ul>
 
 <div class="panel">
-  <div class="panel-heading">{{product.name}}</div>
-  <img class="product-image" ng-src="{{product.image_url}}">
-  <p>{{product.description}}</p>
-  <p class="text-muted">${{product.final_price_with_tax}}
-    <button class="btn btn-primary" ng-click="buy(product.entity_id)">Buy</button>
-  </p>
+  <p ng-hide="product">Loading product...</p>
+  <div ng-show="product">
+    <div class="panel-heading">{{product.name}}</div>
+    <img class="product-image" ng-src="{{product.image_url}}">
+    <p>{{product.description}}</p>
+    <p class="text-muted">${{product.final_price_with_tax}}
+      <button class="btn btn-primary" ng-click="buy(product.entity_id)">Buy</button>
+    </p>
+  </div>
 </div>
