@@ -1,28 +1,41 @@
-<ul class="breadcrumb">
+<ul class="breadcrumb simple">
   <li class="active">{{category}}</li>
 </ul>
 
-<div class="panel">
-  <p ng-hide="products.length">Loading products...</p>
-  <table ng-show="products.length" class="table table-hover table-condensed">
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-    <tr ng-repeat="product in products">
-      <td><a href="#/categories/{{category}}/products/{{product.entity_id}}">{{product.name}}</a></td>
-      <td>{{product.short_description}}</td>
-    </tr>
-  </table>
+<p ng-hide="products.length">Loading products...</p>
 
-  <ul class="pagination">
-    <li ng-class="{active: currentPage == 1}">
-      <a href="#/categories/{{category}}/products/{{product.entity_id}}?page={{currentPage - 1}}">&laquo;</a>
-    </li>
-    <li class="active">
-      <a>{{currentPage}}</a>
-    </li>
-    <li>
-      <a href="#/categories/{{category}}/products/{{product.entity_id}}?page={{currentPage + 1}}">&raquo;</a>
-    </li>
-  </ul>
-</div>
+<ul id="product-list" class="list-group" ng-show="products.length">
+  <li class="list-group-item" ng-repeat="product in products" ng-class-odd="'odd'" ng-class-even="'even'">
+    <div class="row">
+      <div class="col-2">
+        <img ng-src="{{product.image_url}}" alt="{{product.product_name}}" class="product-image">
+      </div>
+      <div class="col-10">
+        <a ng-href="#/categories/{{category}}/products/{{product.entity_id}}" class="product-description">
+          <strong>{{product.description}}</strong>
+        </a>
+        <div class="product-short-description">
+          {{product.short_description}}
+        </div>
+        <div class="product-btc-price">
+          {{product.final_price_with_tax | number:2}} BTC
+        </div>
+        <div class="product-price">
+          <strong>&#36;{{product.final_price_with_tax | number:2}}</strong>
+        </div>
+      </div>
+    </div>
+  </li>
+</ul>
+
+<ul class="pagination text-center">
+  <li ng-class="{active: currentPage == 1}">
+    <a href="#/categories/{{category}}/products/{{product.entity_id}}?page={{currentPage - 1}}">Prev</a>
+  </li>
+  <li class="active">
+    <a>Page {{currentPage}} of &#63;</a>
+  </li>
+  <li>
+    <a href="#/categories/{{category}}/products/{{product.entity_id}}?page={{currentPage + 1}}">Next</a>
+  </li>
+</ul>
