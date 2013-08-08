@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
-angular.module('hiveBitcoinstoreApp', [])
+angular.module("hiveBitcoinstoreApp", [])
   .config(function ($routeProvider) {
     $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
+      .when("/", {
+        templateUrl: "views/categories.html",
+        controller: "CategoriesCtrl"
       })
       .otherwise({
-        redirectTo: '/'
+        redirectTo: "/"
       });
   });
