@@ -17,6 +17,17 @@
   cursor: pointer;
 }
 
+/* Generic */
+.row-loose {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.breadcrumb a {
+  color: #f12f23;
+}
+
+
 /* Header */
 #header .row {
   padding: 10px 0;
@@ -55,7 +66,7 @@
   text-decoration: underline;
 }
 
-/* Product details */
+/* Product detail */
 .product .product-image {
   height: 67px;
   width: 67px;
