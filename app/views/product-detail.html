@@ -11,57 +11,59 @@
 </div>
 
 <div class="container row-loose product" id="product-detail" ng-show="product">
-  <div class="row">
-    <div class="col-2">
-      <img ng-src="{{product.image_url}}" alt="{{product.product_name}}" class="product-image">
-    </div>
+  <div class="col-12">
+    <div class="row">
+      <div class="col-2">
+        <img ng-src="{{product.image_url}}" alt="{{product.product_name}}" class="product-image">
+      </div>
 
-    <div class="col-10">
-      <p class="product-name">
-        <strong>{{product.name}}</strong>
-      </p>
-      <div class="product-availability">
-        Availability: {{product.is_in_stock | inStock}}
-      </div>
-      <div class="product-btc-price">
-        {{product.final_price_with_tax | number:2}} BTC
-      </div>
-      <div class="product-price">
-        <strong>&#36;{{product.final_price_with_tax | number:2}}</strong>
-      </div>
-    </div>
-  </div>
-
-  <div class="row row-loose product-action">
-    <div class="col-3">
-      <div class="product-btc-price">
-        {{product.final_price_with_tax | number:2}} BTC
-      </div>
-      <div class="product-price">
-        <strong>&#36;{{product.final_price_with_tax | number:2}}</strong>
-      </div>
-    </div>
-    <div class="col-6">
-      <form class="form-horizontal">
-        <div class="form-group">
-          <label class="col-2 control-label" for="qty">Qty</label>
-          <div class="col-10">
-            <input class="form-control" type="text" id="qty">
-          </div>
+      <div class="col-10">
+        <p class="product-name">
+          <strong>{{product.name}}</strong>
+        </p>
+        <div class="product-availability">
+          Availability: {{product.is_in_stock | inStock}}
         </div>
-      </form>
+        <div class="product-btc-price">
+          {{product.final_price_with_tax | number:2}} BTC
+        </div>
+        <div class="product-price">
+          <strong>&#36;{{product.final_price_with_tax | number:2}}</strong>
+        </div>
+      </div>
     </div>
-    <div class="col-3">
-      <a href="#" class="btn btn-danger">Add to cart</a>
-    </div>
-  </div>
 
-  <div class="row row-loose">
-    <div class="col-12">
-      <h4>Details</h4>
-      <div>{{product.description}}</div>
-      <h4>Additional data</h4>
-      <div>{{product.marketing_information}}</div>
+    <div class="row row-loose product-action">
+      <div class="col-3">
+        <div class="product-btc-price">
+          {{product.final_price_with_tax | number:2}} BTC
+        </div>
+        <div class="product-price">
+          <strong>&#36;{{product.final_price_with_tax | number:2}}</strong>
+        </div>
+      </div>
+      <div class="col-6">
+        <form class="form-horizontal">
+          <div class="form-group">
+            <label class="col-2 control-label" for="qty">Qty</label>
+            <div class="col-10">
+              <input class="form-control" type="text" id="qty">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-3">
+        <a href="#" class="btn btn-danger">Add to cart</a>
+      </div>
+    </div>
+
+    <div class="row row-loose">
+      <div class="col-12">
+        <h4>Details</h4>
+        <div>{{product.description}}</div>
+        <h4>Additional data</h4>
+        <div>{{product.marketing_information}}</div>
+      </div>
     </div>
   </div>
 </div>
