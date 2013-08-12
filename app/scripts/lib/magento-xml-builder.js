@@ -27,5 +27,5 @@ var magentoXmlBuilder = {
 
     getContent: function (item) {
         return item === null ? "" : item;
-    },
-}
+    }
+};

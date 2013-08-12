@@ -325,7 +325,7 @@ options {
       },
       wrapWithEnvelope: function(xml, isSoap12) {
         var ns = (isSoap12) ? this.SOAP12_NAMESPACE : this.SOAP11_NAMESPACE ;
-        var wrapped = "<soap:Envelope xmlns:soap=\""+ns+"\"><soap:Body>"+xml+"</soap:Body></soap:Envelope>";
+        var wrapped = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\""+ns+"\" xmlns:ns1=\"urn:Magento\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:SOAP-ENC=\"http://schemas.xmlsoap.org/soap/encoding/\" SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"><SOAP-ENV:Body>"+xml+"</SOAP-ENV:Body></SOAP-ENV:Envelope>";
         return wrapped;
       },
       json2soap: function (name, params, prefix,parentNode) {
@@ -420,29 +420,42 @@ options {
   var SOAPRequest=function(soapObj) {
     this.typeOf="SOAPRequest";
     this.soapNamespace = SOAPTool.SOAP11_NAMESPACE;
-    var nss=[];
+    var nss= [
+        {name: "SOAP-ENV:encodingStyle", uri: "http://schemas.xmlsoap.org/soap/encoding/"},
+        {name: "xmlns:SOAP-ENC", uri: "http://schemas.xmlsoap.org/soap/encoding/"},
+        {name: "xmlns:xsi", uri: "http://www.w3.org/2001/XMLSchema-instance"},
+        {name: "xmlns:xsd", uri: "http://www.w3.org/2001/XMLSchema"},
+        {name: "xmlns:ns1", uri: "urn:Magento"}
+    ];
     var headers=[];
     var bodies=(!!soapObj)?[soapObj]:[];
     this.addNamespace=function(ns, uri){nss.push(new SOAPTool.Namespace(ns, uri));};
     this.addHeader=function(soapObj){headers.push(soapObj);};
     this.addBody=function(soapObj){bodies.push(soapObj);};
     this.toString=function() {
-      var soapEnv = new SOAPObject("soap:Envelope");
-      soapEnv.attr("xmlns:soap",this.soapNamespace);
+      var soapEnv = new SOAPObject("SOAP-ENV:Envelope");
+      soapEnv.attr("xmlns:SOAP-ENV",this.soapNamespace);
       //Add Namespace(s)
       if(nss.length>0){
         var tNs, tNo;
-        for(tNs in nss){if(!nss.hasOwnProperty || nss.hasOwnProperty(tNs)){tNo=nss[tNs];if(typeof(tNo)==="object"){soapEnv.attr("xmlns:"+tNo.name, tNo.uri);}}}
+        for (tNs in nss){
+            if (!nss.hasOwnProperty || nss.hasOwnProperty(tNs)) {
+                tNo=nss[tNs];
+                if (typeof(tNo)==="object") {
+                    soapEnv.attr(tNo.name, tNo.uri);
+                }
+            }
+        }
       }
       //Add Header(s)
       if(headers.length>0) {
-        var soapHeader = soapEnv.appendChild(new SOAPObject("soap:Header"));
+        var soapHeader = soapEnv.appendChild(new SOAPObject("SOAP-ENV:Header"));
         var tHdr;
         for(tHdr in headers){if(!headers.hasOwnProperty || headers.hasOwnProperty(tHdr)){soapHeader.appendChild(headers[tHdr]);}}
       }
       //Add Body(s)
       if(bodies.length>0) {
-        var soapBody = soapEnv.appendChild(new SOAPObject("soap:Body"));
+        var soapBody = soapEnv.appendChild(new SOAPObject("SOAP-ENV:Body"));
         var tBdy;
         for(tBdy in bodies){if(!bodies.hasOwnProperty || bodies.hasOwnProperty(tBdy)){soapBody.appendChild(bodies[tBdy]);}}
       }
