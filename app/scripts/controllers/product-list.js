@@ -11,7 +11,7 @@ angular.module("hiveBitcoinstoreApp")
         client.login(config.storeUsername, config.storePassword).done(function () {
             client.categoryAssignedProducts($scope.categoryId).done(function (json) {
                 jsonPart = json.callResponse.callReturn.item;
-                jsonPart = _.isObject(jsonPart) ? [{item: jsonPart.item}] : jsonPart;
+                jsonPart = (_.isObject(jsonPart) && !_.isArray(jsonPart)) ? [{item: jsonPart.item}] : jsonPart;
 
                 productIds = _.map(jsonPart, function (item) {
                     return item.item[0].value.text;
@@ -19,7 +19,7 @@ angular.module("hiveBitcoinstoreApp")
 
                 client.productInfo(productIds).done(function (json) {
                     jsonPart = json.multiCallResponse.multiCallReturn.item;
-                    jsonPart = _.isObject(jsonPart) ? [{item: jsonPart.item}] : jsonPart;
+                    jsonPart = (_.isObject(jsonPart) && !_.isArray(jsonPart)) ? [{item: jsonPart.item}] : jsonPart;
 
                     _.each(jsonPart, function (item) {
                         item = mapper.build(item);
@@ -27,7 +27,7 @@ angular.module("hiveBitcoinstoreApp")
                     });
                     client.productMediaList(productIds).done(function (json) {
                         jsonPart = json.multiCallResponse.multiCallReturn.item;
-                        jsonPart = _.isObject(jsonPart) ? [{item: jsonPart.item}] : jsonPart;
+                        jsonPart = (_.isObject(jsonPart) && !_.isArray(jsonPart)) ? [{item: jsonPart.item}] : jsonPart;
 
                         _.each(jsonPart, function (item, index) {
                             if (item.item) {
@@ -38,7 +38,7 @@ angular.module("hiveBitcoinstoreApp")
 
                         client.productStockList(productIds).done(function (json) {
                             jsonPart = json.callResponse.callReturn.item;
-                            jsonPart = _.isObject(jsonPart) ? [{item: jsonPart.item}] : jsonPart;
+                            jsonPart = (_.isObject(jsonPart) && !_.isArray(jsonPart)) ? [{item: jsonPart.item}] : jsonPart;
 
                             _.each(jsonPart, function (item, index) {
                                 item = mapper.build(item);
