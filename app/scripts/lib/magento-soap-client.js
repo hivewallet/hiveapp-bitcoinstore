@@ -521,7 +521,30 @@ MagentoSoapClient.prototype.cartPaymentMethod = function (cartId, method) {
     return deferred.promise();
 };
 
-MagentoSoapClient.prototype.cartOrder = function (cartId) {};
+MagentoSoapClient.prototype.cartOrder = function (cartId) {
+    var sessionId = this.sessionId,
+        path = "cart.order",
+        deferred = $.Deferred();
+
+    $.soap({
+        method: "ns1:call",
+        params: {
+            sessionId: sessionId,
+            resourcePath: path,
+            args: cartId
+        },
+        success: function (response) {
+            var json = response.toJSON();
+            deferred.resolve(json.Body);
+        },
+        error: function (response) {
+            var json = response.toJSON();
+            deferred.reject(json);
+        }
+    });
+
+    return deferred.promise();
+};
 
 // Helper methods
 MagentoSoapClient.prototype._serialize = function (doc) {
