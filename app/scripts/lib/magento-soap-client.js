@@ -430,7 +430,8 @@ MagentoSoapClient.prototype.cartProductAdd = function (cartId, products) {
 };
 
 MagentoSoapClient.prototype.cartShippingList = function (cartId) {
-    var sessionId = this.sessionId,
+    var self = this,
+        sessionId = this.sessionId,
         path = "cart_shipping.list",
         deferred = $.Deferred();
 
@@ -442,8 +443,13 @@ MagentoSoapClient.prototype.cartShippingList = function (cartId) {
             args: cartId
         },
         success: function (response) {
-            var json = response.toJSON();
-            deferred.resolve(json.Body);
+            var json = response.toJSON(),
+                items;
+
+            self._handleResponse(json, deferred, function () {
+                items = self._arrayWrap(json.Body.callResponse.callReturn.item);
+                deferred.resolve(items);
+            });
         },
         error: function (response) {
             var json = response.toJSON();
