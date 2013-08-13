@@ -64,7 +64,8 @@ MagentoSoapClient.prototype.categoryLevel = function (categoryId) {
         params: this._serialize(body),
         success: function (response) {
             var json = response.toJSON();
-            deferred.resolve(json.Body);
+                items = self._arrayWrap(json.Body.callResponse.callReturn.item);
+            deferred.resolve(items);
         },
         error: function (response) {
             var json = response.toJSON();
@@ -76,7 +77,8 @@ MagentoSoapClient.prototype.categoryLevel = function (categoryId) {
 };
 
 MagentoSoapClient.prototype.categoryAssignedProducts = function (categoryId) {
-    var sessionId = this.sessionId,
+    var self = this,
+        sessionId = this.sessionId,
         path = "category.assignedProducts",
         deferred = $.Deferred();
 
@@ -88,8 +90,9 @@ MagentoSoapClient.prototype.categoryAssignedProducts = function (categoryId) {
             args: categoryId
         },
         success: function (response) {
-            var json = response.toJSON();
-            deferred.resolve(json.Body);
+            var json = response.toJSON(),
+                items = self._arrayWrap(json.Body.callResponse.callReturn.item);
+            deferred.resolve(items);
         },
         error: function (response) {
             var json = response.toJSON();
@@ -124,8 +127,9 @@ MagentoSoapClient.prototype.productInfo = function (productIds) {
     $.soap({
         params: this._serialize(body),
         success: function (response) {
-            var json = response.toJSON();
-            deferred.resolve(json.Body);
+            var json = response.toJSON(),
+                items = self._arrayWrap(json.Body.multiCallResponse.multiCallReturn.item);
+            deferred.resolve(items);
         },
         error: function (response) {
             var json = response.toJSON();
@@ -159,8 +163,9 @@ MagentoSoapClient.prototype.productMediaList = function (productIds) {
     $.soap({
         params: this._serialize(body),
         success: function (response) {
-            var json = response.toJSON();
-            deferred.resolve(json.Body);
+            var json = response.toJSON(),
+                items = self._arrayWrap(json.Body.multiCallResponse.multiCallReturn.item);
+            deferred.resolve(items);
         },
         error: function (response) {
             var json = response.toJSON();
@@ -193,8 +198,9 @@ MagentoSoapClient.prototype.productStockList = function (productIds) {
     $.soap({
         params: this._serialize(body),
         success: function (response) {
-            var json = response.toJSON();
-            deferred.resolve(json.Body);
+            var json = response.toJSON(),
+                items = self._arrayWrap(json.Body.callResponse.callReturn.item);
+            deferred.resolve(items);
         },
         error: function (response) {
             var json = response.toJSON();
@@ -547,6 +553,11 @@ MagentoSoapClient.prototype.cartOrder = function (cartId) {
 };
 
 // Helper methods
+MagentoSoapClient.prototype._arrayWrap = function (object) {
+    object = object || [];
+    return _.isArray(object) ? object : [{item: object.item}]
+};
+
 MagentoSoapClient.prototype._serialize = function (doc) {
     return new XMLSerializer().serializeToString(doc);
 };
