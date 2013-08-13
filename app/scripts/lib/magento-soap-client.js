@@ -540,8 +540,10 @@ MagentoSoapClient.prototype.cartOrder = function (cartId) {
             args: cartId
         },
         success: function (response) {
-            var json = response.toJSON();
-            deferred.resolve(json.Body);
+            var json = response.toJSON(),
+                orderId = json.Body.callResponse.callReturn.toString();
+
+            deferred.resolve(orderId);
         },
         error: function (response) {
             var json = response.toJSON();
@@ -555,7 +557,7 @@ MagentoSoapClient.prototype.cartOrder = function (cartId) {
 // Helper methods
 MagentoSoapClient.prototype._arrayWrap = function (object) {
     object = object || [];
-    return _.isArray(object) ? object : [{item: object.item}]
+    return _.isArray(object) ? object : [{item: object.item}];
 };
 
 MagentoSoapClient.prototype._serialize = function (doc) {
