@@ -230,7 +230,53 @@ MagentoSoapClient.prototype.cartCustomerSet = function (cartId, customer) {
     return deferred.promise();
 };
 
-MagentoSoapClient.prototype.cartCustomerAddresses = function (cartId, addresses) {};
+MagentoSoapClient.prototype.cartCustomerAddresses = function (cartId, addresses) {
+    var self = this,
+        sessionId = this.sessionId,
+        path = "cart_customer.addresses",
+        deferred = $.Deferred(),
+        body;
+
+    body = xml("ns1:call", {}, function () {
+        this.xml("sessionId", {}, function () { this.text(sessionId); });
+        this.xml("resourcePath", {}, function () { this.text(path); });
+        this.xml("args", self._xmlUrArrayType(2), function () {
+            this.xml("item", self._xmlIntType(), function () { this.text(cartId); });
+            this.xml("item", self._xmlMapArrayType(addresses.length), function () {
+                addresses.forEach(function (address) {
+                    this.xml("item", self._xmlMapType(), function () {
+                        Object.keys(address).forEach(function (key) {
+                            var value = address[key];
+
+                            this.xml("item", {}, function () {
+                                this.xml("key", self._xmlStringType(), function () {
+                                    this.text(key);
+                                });
+                                this.xml("value", self._xmlStringType(), function () {
+                                    this.text(value);
+                                });
+                            });
+                        }, this);
+                    });
+                }, this);
+            });
+        });
+    });
+
+    $.soap({
+        params: this._serialize(body),
+        success: function (response) {
+            var json = response.toJSON();
+            deferred.resolve(json.Body);
+        },
+        error: function (response) {
+            var json = response.toJSON();
+            deferred.reject(json);
+        }
+    });
+
+    return deferred.promise();
+};
 
 MagentoSoapClient.prototype.cartProductAdd = function (cartId, products) {};
 
@@ -273,4 +319,8 @@ MagentoSoapClient.prototype._xmlUrArrayType = function (length) {
 
 MagentoSoapClient.prototype._xmlUrFixedArrayType = function (length) {
     return {"SOAP-ENC:arrayType": "xsd:ur-type[" + length + "]", "xsi:type": "ns1:FixedArray"};
+};
+
+MagentoSoapClient.prototype._xmlMapArrayType = function (length) {
+    return {"xsi:type": "ns2:Map[" + length + "]", "xsi:type": "SOAP-ENC:Array"};
 };
