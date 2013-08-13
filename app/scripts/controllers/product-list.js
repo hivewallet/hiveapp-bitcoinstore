@@ -4,16 +4,13 @@ angular.module("hiveBitcoinstoreApp")
     .controller("ProductListCtrl", function ($scope, $rootScope, $routeParams, $filter, config, mapper) {
         var productIds, item, jsonPart;
 
-        $scope.category = {
-            id: $routeParams.categoryId,
-            name: $filter('findBy')('category_id', $rootScope.categories, $routeParams.categoryId).name
-        };
-        $scope.currentPage = parseInt($routeParams.page || 1);
+        $scope.category = $filter('findBy')('category_id', $rootScope.categories, $routeParams.categoryId);
         $rootScope.products = [];
+        $scope.currentPage = parseInt($routeParams.page || 1);
 
         var client = new MagentoSoapClient(config.storeUrl);
         client.login(config.storeUsername, config.storePassword).done(function () {
-            client.categoryAssignedProducts($scope.category.id).done(function (json) {
+            client.categoryAssignedProducts($scope.category.category_id).done(function (json) {
                 jsonPart = json.callResponse.callReturn.item;
                 jsonPart = (_.isObject(jsonPart) && !_.isArray(jsonPart)) ? [{item: jsonPart.item}] : jsonPart;
 
