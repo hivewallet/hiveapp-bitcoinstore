@@ -1,4 +1,6 @@
-<p class="text-center" ng-hide="categories.length">Loading...</p>
+<div class="alert alert-info text-center" ng-hide="categories.length">
+  <strong>Loading...</strong>
+</div>
 
 <ul id="category-list" class="list-group" ng-show="categories.length">
   <li class="list-group-item" ng-repeat="category in categories">

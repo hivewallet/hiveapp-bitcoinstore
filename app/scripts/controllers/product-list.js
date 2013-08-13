@@ -3,7 +3,7 @@
 angular.module("hiveBitcoinstoreApp")
     .controller("ProductListCtrl", function ($scope, $rootScope, $routeParams, $location, $filter, config, mapper) {
         var client = new MagentoSoapClient(config.storeUrl),
-            productIds, item, jsonPart;
+            productIds;
 
         $scope.category = $filter('findBy')('category_id', $rootScope.categories, $routeParams.categoryId);
         $rootScope.products = [];
@@ -21,6 +21,7 @@ angular.module("hiveBitcoinstoreApp")
                             var product = mapper.build(item);
                             $rootScope.products.push(product);
                         });
+
                         client.productMediaList(productIds).done(function (json) {
                             _.each(json, function (item, index) {
                                 if (item.item) {
@@ -35,6 +36,7 @@ angular.module("hiveBitcoinstoreApp")
                                     $rootScope.products[index]["inventory"] = stockInfo;
                                 });
                             });
+
                             $rootScope.$apply();
                         });
                     });

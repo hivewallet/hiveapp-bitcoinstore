@@ -2,7 +2,9 @@
   <li class="active">{{category.name}}</li>
 </ul>
 
-<p class="text-center" ng-hide="products.length">Loading...</p>
+<div class="alert alert-info text-center" ng-hide="products.length">
+  <strong>Loading...</strong>
+</div>
 
 <ul id="product-list" class="list-group" ng-show="products.length">
   <li class="list-group-item" ng-repeat="product in products" ng-class-odd="'odd'" ng-class-even="'even'">
