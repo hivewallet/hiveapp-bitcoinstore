@@ -24,12 +24,14 @@ angular.module("hiveBitcoinstoreApp", ["btcstoreFilters"])
         });
     })
     .run(function ($rootScope) {
+        $rootScope.errorHandler = function (x, status, error) {
+            $rootScope.btcStoreServerError = error;
+            $rootScope.$apply();
+        };
+
         $(function () {
             $.ajaxSetup({
-                error: function (x, status, error) {
-                    $rootScope.btcStoreServerError = error;
-                    $rootScope.$apply();
-                }
+                error: $rootScope.errorHandler
             });
         });
     });

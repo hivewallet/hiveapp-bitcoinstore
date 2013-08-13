@@ -43,8 +43,8 @@ angular.module("hiveBitcoinstoreApp")
                             $rootScope.$apply();
                         });
                     });
-                });
-            });
+                }).fail($rootScope.errorHandler);
+            }).fail($rootScope.errorHandler);
         } else {
             $location.path("/");
         }

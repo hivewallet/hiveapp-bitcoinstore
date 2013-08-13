@@ -27,17 +27,19 @@ MagentoSoapClient.prototype.login = function (username, apiKey) {
         },
         success: function (response) {
             var json = response.toJSON(),
-                sessionId = json.Body.loginResponse.loginReturn.toString();
+                sessionId;
 
-            self.sessionId = sessionId;
-            deferred.resolve(sessionId);
+            self._handleResponse(json, deferred, function () {
+                sessionId = json.Body.loginResponse.loginReturn.toString();
+                self.sessionId = sessionId;
+                deferred.resolve(sessionId);
+            });
         },
         error: function (response) {
             var json = response.toJSON();
             deferred.reject(json);
         }
     });
-
     return deferred.promise();
 };
 
@@ -91,8 +93,12 @@ MagentoSoapClient.prototype.categoryAssignedProducts = function (categoryId) {
         },
         success: function (response) {
             var json = response.toJSON(),
+                items;
+
+            self._handleResponse(json, deferred, function () {
                 items = self._arrayWrap(json.Body.callResponse.callReturn.item);
-            deferred.resolve(items);
+                deferred.resolve(items);
+            });
         },
         error: function (response) {
             var json = response.toJSON();
@@ -555,6 +561,15 @@ MagentoSoapClient.prototype.cartOrder = function (cartId) {
 };
 
 // Helper methods
+MagentoSoapClient.prototype._handleResponse = function (json, deferred, callback) {
+    if (json.Body.Fault) {
+        // To be compatible with error handler for jQuery, we're faking first argument
+        deferred.reject({}, json.Body.Fault.faultcode, json.Body.Fault.faultstring);
+    } else {
+        callback();
+    }
+};
+
 MagentoSoapClient.prototype._arrayWrap = function (object) {
     object = object || [];
     return _.isArray(object) ? object : [{item: object.item}];

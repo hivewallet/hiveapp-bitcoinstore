@@ -13,5 +13,5 @@ angular.module("hiveBitcoinstoreApp")
                 });
                 $rootScope.$apply();
             });
-        });
+        }).fail($rootScope.errorHandler);
     });
