@@ -15,11 +15,9 @@ angular.module("hiveBitcoinstoreApp")
             client.login(config.storeUsername, config.storePassword).done(function () {
                 client.cartCreate().done(function (cartId) {
                     var customer = {
-                        firstname: "testFirstname",
-                        lastname: "testLastName",
-                        email: "testEmail@example.com",
-                        website_id: "1",
-                        store_id: "1",
+                        firstname: "John",
+                        lastname: "Doe",
+                        email: "johndoe@example.com",
                         mode: "guest"
                     };
 
@@ -27,33 +25,26 @@ angular.module("hiveBitcoinstoreApp")
                         var addresses = [
                             {
                                 mode: "shipping",
-                                firstname: "testFirstname",
-                                lastname: "testLastname",
-                                company: "testCompany",
-                                street: "testStreet",
-                                city: "testCity",
-                                region: "testRegion",
-                                postcode: "testPostcode",
-                                country_id: "id",
-                                telephone: "0123456789",
-                                fax: "0123456789",
-                                is_default_shipping: 0,
-                                is_default_billing: 0
+                                firstname: "John",
+                                lastname: "Doe",
+                                street: "Sesame Str",
+                                city: "New York",
+                                region_id: 43,
+                                postcode: "10000",
+                                country_id: "US",
+                                telephone: "0123456789"
                             },
                             {
                                 mode: "billing",
-                                firstname: "testFirstname",
-                                lastname: "testLastname",
-                                company: "testCompany",
-                                street: "testStreet",
-                                city: "testCity",
-                                region: "testRegion",
-                                postcode: "testPostcode",
-                                country_id: "id",
-                                telephone: "0123456789",
-                                fax: "0123456789",
-                                is_default_shipping: 0,
-                                is_default_billing: 0
+                                firstname: "John",
+                                lastname: "Doe",
+                                email: "johndoe@example.com",
+                                street: "Sesame Str",
+                                city: "New York",
+                                region_id: 43,
+                                postcode: "10000",
+                                country_id: "US",
+                                telephone: "0123456789"
                             }
                         ];
 
@@ -64,7 +55,7 @@ angular.module("hiveBitcoinstoreApp")
                             }];
 
                             client.cartProductAdd(cartId, product).done(function () {
-                                var shippingMethod = "flatrate_flatrate";
+                                var shippingMethod = "tablerate_bestway";
 
                                 client.cartShippingMethod(cartId, shippingMethod).done(function () {
                                     var paymentMethod = "checkmo";

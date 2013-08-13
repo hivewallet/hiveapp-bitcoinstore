@@ -243,7 +243,8 @@ MagentoSoapClient.prototype.cartCreate = function () {
         method: "ns1:call",
         params: {
             sessionId: sessionId,
-            resourcePath: path
+            resourcePath: path,
+            args: this.storeId
         },
         success: function (response) {
             var json = response.toJSON(),

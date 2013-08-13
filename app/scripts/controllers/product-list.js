@@ -11,14 +11,15 @@ angular.module("hiveBitcoinstoreApp")
 
         if ($scope.category) {
             client.login(config.storeUsername, config.storePassword).done(function () {
-                client.categoryAssignedProducts($scope.category.category_id).done(function (json) {
-                    productIds = _.map(json, function (item) {
-                        return item.item[0].value.text;
-                    });
+                // client.categoryAssignedProducts($scope.category.category_id).done(function (json) {
+                //     productIds = _.map(json, function (item) {
+                //         return item.item[0].value.text;
+                //     });
 
-                    // TODO: Add pagination
-                    productIds = productIds.slice(0, 25);
+                //     productIds = productIds.slice(0, 25);
 
+                    // Hardcoded product IDs till we have access to category.assignedProducts
+                    productIds = ["1248219", "1343479"];
                     client.productInfo(productIds).done(function (json) {
                         _.each(json, function (item) {
                             var product = mapper.build(item);
@@ -44,7 +45,7 @@ angular.module("hiveBitcoinstoreApp")
                         }).fail($rootScope.errorHandler);;
                     }).fail($rootScope.errorHandler);;
                 }).fail($rootScope.errorHandler);
-            }).fail($rootScope.errorHandler);
+            // }).fail($rootScope.errorHandler);
         } else {
             $location.path("/");
         }
