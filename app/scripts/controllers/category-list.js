@@ -2,6 +2,7 @@
 
 angular.module("hiveBitcoinstoreApp")
     .controller("CategoryListCtrl", function ($scope, config) {
+        $scope.categories = [];
         var client = new MagentoSoapClient(config.storeUrl);
         client.login(config.storeUsername, config.storePassword).done(function () {
             client.categoryLevel(config.storeCategoryLevel).done(function (json) {

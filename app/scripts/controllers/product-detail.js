@@ -2,7 +2,7 @@
 
 angular.module("hiveBitcoinstoreApp")
     .controller("ProductDetailCtrl", function ($scope, $routeParams) {
-        $scope.category = $routeParams.category;
+        $scope.category = $routeParams.categoryId;
 
         $scope.buy = function (productId) {
             alert("You bought " + productId);

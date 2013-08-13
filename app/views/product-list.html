@@ -1,5 +1,5 @@
 <ul class="breadcrumb simple">
-  <li class="active">{{category}}</li>
+  <li class="active">{{categoryId}}</li>
 </ul>
 
 <p ng-hide="products.length">Loading products...</p>
@@ -8,35 +8,23 @@
   <li class="list-group-item" ng-repeat="product in products" ng-class-odd="'odd'" ng-class-even="'even'">
     <div class="row product">
       <div class="col-2">
-        <img ng-src="{{product.image_url}}" alt="{{product.product_name}}" class="product-image">
+        <img ng-src="{{product.image_url}}" alt="{{product.image_label}}" class="product-image">
       </div>
 
       <div class="col-10">
-        <a ng-href="#/categories/{{category}}/products/{{product.entity_id}}" class="product-name">
+        <a ng-href="#/categories/{{categoryId}}/products/{{product.product_id}}" class="product-name">
           <strong>{{product.name}}</strong>
         </a>
         <div class="product-short-description">
           {{product.short_description}}
         </div>
         <div class="product-btc-price">
-          {{product.final_price_with_tax | number:2}} BTC
+          {{product.special_price | number:2}} BTC
         </div>
         <div class="product-price">
-          <strong>&#36;{{product.final_price_with_tax | number:2}}</strong>
+          <strong>&#36;{{product.price | number:2}}</strong>
         </div>
       </div>
     </div>
-  </li>
-</ul>
-
-<ul class="pagination text-center" ng-show="products.length">
-  <li ng-class="{active: currentPage == 1}">
-    <a href="#/categories/{{category}}/products/{{product.entity_id}}?page={{currentPage - 1}}">Prev</a>
-  </li>
-  <li class="active">
-    <a>Page {{currentPage}} of &#63;</a>
-  </li>
-  <li>
-    <a href="#/categories/{{category}}/products/{{product.entity_id}}?page={{currentPage + 1}}">Next</a>
   </li>
 </ul>

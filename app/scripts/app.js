@@ -7,15 +7,14 @@ angular.module("hiveBitcoinstoreApp", ["btcstoreFilters"])
             templateUrl: "views/category-list.html",
             controller: "CategoryListCtrl"
         })
-        .when("/categories/:category/products", {
+        .when("/categories/:categoryId/products", {
             templateUrl: "views/product-list.html",
             controller: "ProductListCtrl"
         })
-        .when("/categories/:category/products/:productId", {
+        .when("/categories/:categoryId/products/:productId", {
             templateUrl: "views/product-detail.html",
             controller: "ProductDetailCtrl"
         })
-
         .otherwise({
             redirectTo: "/"
         });
