@@ -1,6 +1,6 @@
 <ul class="breadcrumb simple">
   <li class="active">
-    <a ng-href="#/categories/{{category}}/products">{{category}}</a>
+    <a ng-href="#/categories/{{categoryId}}/products">{{categoryId}}</a>
   </li>
 </ul>
 
@@ -14,7 +14,7 @@
   <div class="col-12">
     <div class="row row-loose">
       <div class="col-2">
-        <img ng-src="{{product.image_url}}" alt="{{product.product_name}}" class="product-image">
+        <img ng-src="{{product.image_url}}" alt="{{product.image_label}}" class="product-image">
       </div>
 
       <div class="col-10">
@@ -25,10 +25,10 @@
           Availability: {{product.is_in_stock | inStock}}
         </div>
         <div class="product-btc-price">
-          {{product.final_price_with_tax | number:2}} BTC
+          {{product.special_price | number:2}} BTC
         </div>
         <div class="product-price">
-          <strong>&#36;{{product.final_price_with_tax | number:2}}</strong>
+          <strong>&#36;{{product.price | number:2}}</strong>
         </div>
       </div>
     </div>
@@ -36,10 +36,10 @@
     <div class="row row-loose product-action">
       <div class="col-3">
         <div class="product-btc-price">
-          {{product.final_price_with_tax | number:2}} BTC
+          {{product.special_price | number:2}} BTC
         </div>
         <div class="product-price">
-          <strong>&#36;{{product.final_price_with_tax | number:2}}</strong>
+          <strong>&#36;{{product.price | number:2}}</strong>
         </div>
       </div>
       <div class="col-6">
@@ -61,8 +61,6 @@
       <div class="col-12">
         <h4>Details</h4>
         <div>{{product.description}}</div>
-        <h4>Additional data</h4>
-        <div>{{product.marketing_information}}</div>
       </div>
     </div>
   </div>
