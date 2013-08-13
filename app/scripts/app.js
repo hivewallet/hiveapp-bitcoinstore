@@ -22,4 +22,14 @@ angular.module("hiveBitcoinstoreApp", ["btcstoreFilters"])
         .otherwise({
             redirectTo: "/"
         });
+    })
+    .run(function ($rootScope) {
+        $(function () {
+            $.ajaxSetup({
+                error: function (x, status, error) {
+                    $rootScope.btcStoreServerError = "There was an error: " + error;
+                    $rootScope.$apply();
+                }
+            });
+        });
     });
