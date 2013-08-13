@@ -1,11 +1,11 @@
 "use strict";
 
 angular.module("hiveBitcoinstoreApp")
-    .controller("ProductListCtrl", function ($scope, $routeParams, config, mapper) {
-        var productIds;
+    .controller("ProductListCtrl", function ($scope, $rootScope, $routeParams, config, mapper) {
+        var productIds, item;
         $scope.categoryId = $routeParams.categoryId;
         $scope.currentPage = parseInt($routeParams.page || 1);
-        $scope.products = [];
+        $rootScope.products = [];
 
         var client = new MagentoSoapClient(config.storeUrl);
         client.login(config.storeUsername, config.storePassword).done(function () {
@@ -16,9 +16,19 @@ angular.module("hiveBitcoinstoreApp")
 
                 client.productInfo(productIds).done(function (json) {
                     _.each(json.multiCallResponse.multiCallReturn.item, function (item) {
-                        $scope.products.push(mapper.build(item));
+                        item = mapper.build(item);
+                        $rootScope.products.push(item)
                     });
-                    $scope.$apply();
+
+                    client.productMediaList(productIds).done(function (json) {
+                        _.each(json.multiCallResponse.multiCallReturn.item, function (item, index) {
+                            if (item.item) {
+                                item = mapper.build(item.item);
+                                $rootScope.products[index]["image"] = item;
+                            }
+                        });
+                        $rootScope.$apply();
+                    });
                 });
             });
         });

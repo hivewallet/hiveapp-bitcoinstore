@@ -8,7 +8,7 @@
   <li class="list-group-item" ng-repeat="product in products" ng-class-odd="'odd'" ng-class-even="'even'">
     <div class="row product">
       <div class="col-2">
-        <img ng-src="{{product.image_url}}" alt="{{product.image_label}}" class="product-image">
+        <img ng-src="{{product.image.url}}" alt="{{product.name}}" class="product-image">
       </div>
 
       <div class="col-10">

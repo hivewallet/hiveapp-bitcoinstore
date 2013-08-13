@@ -1,17 +1,12 @@
 "use strict";
 
 angular.module("hiveBitcoinstoreApp")
-    .controller("ProductDetailCtrl", function ($scope, $routeParams, config, mapper) {
+    .controller("ProductDetailCtrl", function ($scope, $rootScope, $routeParams, config, mapper) {
         $scope.categoryId = $routeParams.categoryId;
         $scope.productId = $routeParams.productId;
 
-        var client = new MagentoSoapClient(config.storeUrl);
-        client.login(config.storeUsername, config.storePassword).done(function () {
-            client.productInfo([$scope.productId]).done(function (json) {
-                $scope.product = mapper.build(json.multiCallResponse.multiCallReturn.item);
-                $scope.$apply();
-            });
-        });
+        // TODO: if not found fetch from API
+        $scope.product = _.findWhere($rootScope.products, {product_id: $scope.productId});
 
         $scope.buy = function (productId) {
             alert("You bought " + productId);
