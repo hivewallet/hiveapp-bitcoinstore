@@ -325,7 +325,7 @@ options {
       },
       wrapWithEnvelope: function(xml, isSoap12) {
         var ns = (isSoap12) ? this.SOAP12_NAMESPACE : this.SOAP11_NAMESPACE ;
-        var wrapped = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\""+ns+"\" xmlns:ns1=\"urn:Magento\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:SOAP-ENC=\"http://schemas.xmlsoap.org/soap/encoding/\" SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"><SOAP-ENV:Body>"+xml+"</SOAP-ENV:Body></SOAP-ENV:Envelope>";
+        var wrapped = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\""+ns+"\" xmlns:ns1=\"urn:Magento\" xmlns:ns2=\"http://xml.apache.org/xml-soap\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:SOAP-ENC=\"http://schemas.xmlsoap.org/soap/encoding/\" SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"><SOAP-ENV:Body>"+xml+"</SOAP-ENV:Body></SOAP-ENV:Envelope>";
         return wrapped;
       },
       json2soap: function (name, params, prefix,parentNode) {
@@ -425,7 +425,8 @@ options {
         {name: "xmlns:SOAP-ENC", uri: "http://schemas.xmlsoap.org/soap/encoding/"},
         {name: "xmlns:xsi", uri: "http://www.w3.org/2001/XMLSchema-instance"},
         {name: "xmlns:xsd", uri: "http://www.w3.org/2001/XMLSchema"},
-        {name: "xmlns:ns1", uri: "urn:Magento"}
+        {name: "xmlns:ns1", uri: "urn:Magento"},
+        {name: "xmlns:ns2", uri: "http://xml.apache.org/xml-soap"}
     ];
     var headers=[];
     var bodies=(!!soapObj)?[soapObj]:[];
