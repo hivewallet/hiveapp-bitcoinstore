@@ -16,6 +16,9 @@ angular.module("hiveBitcoinstoreApp")
                         return item.item[0].value.text;
                     });
 
+                    // TODO: Add pagination
+                    productIds = productIds.slice(0, 25);
+
                     client.productInfo(productIds).done(function (json) {
                         _.each(json, function (item) {
                             var product = mapper.build(item);
