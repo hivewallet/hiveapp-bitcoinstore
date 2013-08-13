@@ -22,7 +22,7 @@
           <strong>{{product.name}}</strong>
         </p>
         <div class="product-availability">
-          Availability: {{product.is_in_stock | inStock}}
+          Availability: {{product.inventory.is_in_stock | inStock}}
         </div>
         <div class="product-btc-price">
           {{product.special_price | number:2}} BTC

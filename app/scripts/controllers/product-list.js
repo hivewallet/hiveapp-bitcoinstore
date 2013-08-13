@@ -27,6 +27,13 @@ angular.module("hiveBitcoinstoreApp")
                                 $rootScope.products[index]["image"] = item;
                             }
                         });
+
+                        client.productStockList(productIds).done(function (json) {
+                            _.each(json.callResponse.callReturn.item, function (item, index) {
+                                item = mapper.build(item);
+                                $rootScope.products[index]["inventory"] = item;
+                            });
+                        });
                         $rootScope.$apply();
                     });
                 });
