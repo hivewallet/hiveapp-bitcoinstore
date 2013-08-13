@@ -5,7 +5,7 @@ angular.module("hiveBitcoinstoreApp")
         $scope.categories = [];
         var client = new MagentoSoapClient(config.storeUrl);
         client.login(config.storeUsername, config.storePassword).done(function () {
-            client.categoryLevel(config.storeCategoryLevel).done(function (json) {
+            client.categoryLevel(config.storeRootCategoryId).done(function (json) {
                 _.each(json.callResponse.callReturn.item, function (item) {
                     $scope.categories.push(mapper.build(item));
                 });

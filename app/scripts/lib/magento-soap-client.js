@@ -401,15 +401,150 @@ MagentoSoapClient.prototype.cartProductAdd = function (cartId, products) {
 };
 
 MagentoSoapClient.prototype.cartShippingList = function (cartId) {
+    var sessionId = this.sessionId,
+        path = "cart_shipping.list",
+        deferred = $.Deferred();
 
+    $.soap({
+        method: "ns1:call",
+        params: {
+            sessionId: sessionId,
+            resourcePath: path,
+            args: cartId
+        },
+        success: function (response) {
+            var json = response.toJSON();
+            deferred.resolve(json.Body);
+        },
+        error: function (response) {
+            var json = response.toJSON();
+            deferred.reject(json);
+        }
+    });
+
+    return deferred.promise();
 };
 
-MagentoSoapClient.prototype.cartShippingMethod = function (cartId, method) {};
+MagentoSoapClient.prototype.cartShippingMethod = function (cartId, method) {
+    var self = this,
+        sessionId = this.sessionId,
+        path = "cart_shipping.method",
+        deferred = $.Deferred(),
+        body;
 
-MagentoSoapClient.prototype.cartPaymentList = function (cartId) {};
-MagentoSoapClient.prototype.cartPaymentMethod = function (cartId, method) {};
+    body = xml("ns1:call", {}, function () {
+        this.xml("sessionId", {}, function () { this.text(sessionId); });
+        this.xml("resourcePath", {}, function () { this.text(path); });
+        this.xml("args", self._xmlUrArrayType(2), function () {
+            this.xml("item", self._xmlIntType(), function () { this.text(cartId); });
+            this.xml("item", self._xmlStringType(), function () { this.text(method); });
+        });
+    });
 
-MagentoSoapClient.prototype.cartOrder = function (cartId) {};
+    $.soap({
+        params: this._serialize(body),
+        success: function (response) {
+            var json = response.toJSON();
+            deferred.resolve(json.Body);
+        },
+        error: function (response) {
+            var json = response.toJSON();
+            deferred.reject(json);
+        }
+    });
+
+    return deferred.promise();
+};
+
+MagentoSoapClient.prototype.cartPaymentList = function (cartId) {
+    var sessionId = this.sessionId,
+        path = "cart_payment.list",
+        deferred = $.Deferred();
+
+    $.soap({
+        method: "ns1:call",
+        params: {
+            sessionId: sessionId,
+            resourcePath: path,
+            args: cartId
+        },
+        success: function (response) {
+            var json = response.toJSON();
+            deferred.resolve(json.Body);
+        },
+        error: function (response) {
+            var json = response.toJSON();
+            deferred.reject(json);
+        }
+    });
+
+    return deferred.promise();
+};
+MagentoSoapClient.prototype.cartPaymentMethod = function (cartId, method) {
+    var self = this,
+        sessionId = this.sessionId,
+        path = "cart_payment.method",
+        deferred = $.Deferred(),
+        body;
+
+    body = xml("ns1:call", {}, function () {
+        this.xml("sessionId", {}, function () { this.text(sessionId); });
+        this.xml("resourcePath", {}, function () { this.text(path); });
+        this.xml("args", self._xmlUrArrayType(2), function () {
+            this.xml("item", self._xmlIntType(), function () { this.text(cartId); });
+            this.xml("item", self._xmlMapType(), function () {
+                this.xml("item", {}, function () {
+                    this.xml("key", self._xmlStringType(), function () {
+                        this.text("method");
+                    });
+                    this.xml("value", self._xmlStringType(), function () {
+                        this.text(method);
+                    });
+                });
+            });
+
+        });
+    });
+
+    $.soap({
+        params: this._serialize(body),
+        success: function (response) {
+            var json = response.toJSON();
+            deferred.resolve(json.Body);
+        },
+        error: function (response) {
+            var json = response.toJSON();
+            deferred.reject(json);
+        }
+    });
+
+    return deferred.promise();
+};
+
+MagentoSoapClient.prototype.cartOrder = function (cartId) {
+    var sessionId = this.sessionId,
+        path = "cart.order",
+        deferred = $.Deferred();
+
+    $.soap({
+        method: "ns1:call",
+        params: {
+            sessionId: sessionId,
+            resourcePath: path,
+            args: cartId
+        },
+        success: function (response) {
+            var json = response.toJSON();
+            deferred.resolve(json.Body);
+        },
+        error: function (response) {
+            var json = response.toJSON();
+            deferred.reject(json);
+        }
+    });
+
+    return deferred.promise();
+};
 
 // Helper methods
 MagentoSoapClient.prototype._serialize = function (doc) {
