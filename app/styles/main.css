@@ -76,6 +76,15 @@
   background-color: #E5E8E9;
 }
 
+.product-action .product-button {
+  padding-top: 3px;
+}
+
+.product-action .product-info {
+  padding-top: 10px;
+  line-height: 20px;
+}
+
 #product-detail .product-name {
   color: ##444;
 }

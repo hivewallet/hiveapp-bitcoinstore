@@ -36,8 +36,13 @@
           <strong>&#36;{{product.price | number:2}}</strong>
         </div>
       </div>
-      <div class="col-10">
-        <a ng-click="buy(product.product_id)" ng-disabled="product.inventory.is_in_stock == '0'"class="btn btn-danger">Buy</a>
+      <div class="col-1 product-button">
+        <a ng-click="buy(product.product_id)" ng-disabled="product.inventory.is_in_stock == '0' || loading" class="btn btn-danger">
+          Buy
+        </a>
+      </div>
+      <div class="col-9 product-info">
+        <span ng-show="loading">Please wait while we're processing your payment.</span>
       </div>
     </div>
 
