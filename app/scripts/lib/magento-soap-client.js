@@ -480,7 +480,46 @@ MagentoSoapClient.prototype.cartPaymentList = function (cartId) {
 
     return deferred.promise();
 };
-MagentoSoapClient.prototype.cartPaymentMethod = function (cartId, method) {};
+MagentoSoapClient.prototype.cartPaymentMethod = function (cartId, method) {
+    var self = this,
+        sessionId = this.sessionId,
+        path = "cart_payment.method",
+        deferred = $.Deferred(),
+        body;
+
+    body = xml("ns1:call", {}, function () {
+        this.xml("sessionId", {}, function () { this.text(sessionId); });
+        this.xml("resourcePath", {}, function () { this.text(path); });
+        this.xml("args", self._xmlUrArrayType(2), function () {
+            this.xml("item", self._xmlIntType(), function () { this.text(cartId); });
+            this.xml("item", self._xmlMapType(), function () {
+                this.xml("item", {}, function () {
+                    this.xml("key", self._xmlStringType(), function () {
+                        this.text("method");
+                    });
+                    this.xml("value", self._xmlStringType(), function () {
+                        this.text(method);
+                    });
+                });
+            });
+
+        });
+    });
+
+    $.soap({
+        params: this._serialize(body),
+        success: function (response) {
+            var json = response.toJSON();
+            deferred.resolve(json.Body);
+        },
+        error: function (response) {
+            var json = response.toJSON();
+            deferred.reject(json);
+        }
+    });
+
+    return deferred.promise();
+};
 
 MagentoSoapClient.prototype.cartOrder = function (cartId) {};
 
