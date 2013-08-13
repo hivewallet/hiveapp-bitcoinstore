@@ -171,6 +171,40 @@ MagentoSoapClient.prototype.productMediaList = function (productIds) {
     return deferred.promise();
 };
 
+MagentoSoapClient.prototype.productStockList = function (productIds) {
+    var self = this,
+        sessionId = this.sessionId,
+        path = "product_stock.list",
+        deferred = $.Deferred(),
+        body;
+
+    body = xml("ns1:call", {}, function () {
+        this.xml("sessionId", {}, function () { this.text(sessionId); });
+        this.xml("resourcePath", {}, function () { this.text(path); });
+        this.xml("args", self._xmlArrayType(1), function () {
+            this.xml("item", self._xmlStringArrayType(productIds.length), function () {
+                for (var i = 0; i < productIds.length; i++) {
+                    this.xml("item", self._xmlStringType, function () { this.text(productIds[i]); });
+                }
+            });
+        });
+    });
+
+    $.soap({
+        params: this._serialize(body),
+        success: function (response) {
+            var json = response.toJSON();
+            deferred.resolve(json.Body);
+        },
+        error: function (response) {
+            var json = response.toJSON();
+            deferred.reject(json);
+        }
+    });
+
+    return deferred.promise();
+};
+
 // Checkout methods
 MagentoSoapClient.prototype.cartCreate = function () {
     var sessionId = this.sessionId,
@@ -396,6 +430,10 @@ MagentoSoapClient.prototype._xmlStringType = function () {
 
 MagentoSoapClient.prototype._xmlMapType = function () {
     return {"xsi:type": "ns2:Map"};
+};
+
+MagentoSoapClient.prototype._xmlArrayType = function (length) {
+    return {"SOAP-ENC:arrayType": "SOAP-ENC:Array[" + length + "]", "xsi:type": "SOAP-ENC:Array"};
 };
 
 MagentoSoapClient.prototype._xmlStringArrayType = function (length) {
