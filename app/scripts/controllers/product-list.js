@@ -38,11 +38,11 @@ angular.module("hiveBitcoinstoreApp")
                                     var stockInfo = mapper.build(item);
                                     $rootScope.products[index]["inventory"] = stockInfo;
                                 });
-                            });
+                            }).fail($rootScope.errorHandler);;
 
                             $rootScope.$apply();
-                        });
-                    });
+                        }).fail($rootScope.errorHandler);;
+                    }).fail($rootScope.errorHandler);;
                 }).fail($rootScope.errorHandler);
             }).fail($rootScope.errorHandler);
         } else {

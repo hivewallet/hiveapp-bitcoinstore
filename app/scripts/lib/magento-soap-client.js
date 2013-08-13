@@ -65,9 +65,13 @@ MagentoSoapClient.prototype.categoryLevel = function (categoryId) {
     $.soap({
         params: this._serialize(body),
         success: function (response) {
-            var json = response.toJSON();
+            var json = response.toJSON(),
+                items;
+
+            self._handleResponse(json, deferred, function () {
                 items = self._arrayWrap(json.Body.callResponse.callReturn.item);
-            deferred.resolve(items);
+                deferred.resolve(items);
+            });
         },
         error: function (response) {
             var json = response.toJSON();
@@ -134,8 +138,12 @@ MagentoSoapClient.prototype.productInfo = function (productIds) {
         params: this._serialize(body),
         success: function (response) {
             var json = response.toJSON(),
+                items;
+
+            self._handleResponse(json, deferred, function () {
                 items = self._arrayWrap(json.Body.multiCallResponse.multiCallReturn.item);
-            deferred.resolve(items);
+                deferred.resolve(items);
+            });
         },
         error: function (response) {
             var json = response.toJSON();
@@ -170,8 +178,12 @@ MagentoSoapClient.prototype.productMediaList = function (productIds) {
         params: this._serialize(body),
         success: function (response) {
             var json = response.toJSON(),
+                items;
+
+            self._handleResponse(json, deferred, function () {
                 items = self._arrayWrap(json.Body.multiCallResponse.multiCallReturn.item);
-            deferred.resolve(items);
+                deferred.resolve(items);
+            });
         },
         error: function (response) {
             var json = response.toJSON();
@@ -205,8 +217,12 @@ MagentoSoapClient.prototype.productStockList = function (productIds) {
         params: this._serialize(body),
         success: function (response) {
             var json = response.toJSON(),
+                items;
+
+            self._handleResponse(json, deferred, function () {
                 items = self._arrayWrap(json.Body.callResponse.callReturn.item);
-            deferred.resolve(items);
+                deferred.resolve(items);
+            });
         },
         error: function (response) {
             var json = response.toJSON();

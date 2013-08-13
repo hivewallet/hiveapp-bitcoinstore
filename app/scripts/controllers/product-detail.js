@@ -73,13 +73,13 @@ angular.module("hiveBitcoinstoreApp")
                                         client.cartOrder(cartId).done(function (orderId) {
                                             $location.path("/orders/" + orderId).replace();
                                             $scope.$apply(); // Force path change
-                                        });
-                                    });
-                                });
-                            });
-                        });
-                    });
-                });
-            });
+                                        }).fail($rootScope.errorHandler);;
+                                    }).fail($rootScope.errorHandler);;
+                                }).fail($rootScope.errorHandler);;
+                            }).fail($rootScope.errorHandler);;
+                        }).fail($rootScope.errorHandler);;
+                    }).fail($rootScope.errorHandler);;
+                }).fail($rootScope.errorHandler);;
+            }).fail($rootScope.errorHandler);;
         };
     });

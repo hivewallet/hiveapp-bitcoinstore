@@ -12,6 +12,6 @@ angular.module("hiveBitcoinstoreApp")
                     $rootScope.categories.push(mapper.build(item));
                 });
                 $rootScope.$apply();
-            });
+            }).fail($rootScope.errorHandler);;
         }).fail($rootScope.errorHandler);
     });
