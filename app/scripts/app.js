@@ -27,7 +27,7 @@ angular.module("hiveBitcoinstoreApp", ["btcstoreFilters"])
         $(function () {
             $.ajaxSetup({
                 error: function (x, status, error) {
-                    $rootScope.btcStoreServerError = "There was an error: " + error;
+                    $rootScope.btcStoreServerError = error;
                     $rootScope.$apply();
                 }
             });
