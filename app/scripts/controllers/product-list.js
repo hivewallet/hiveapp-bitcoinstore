@@ -1,15 +1,19 @@
 "use strict";
 
 angular.module("hiveBitcoinstoreApp")
-    .controller("ProductListCtrl", function ($scope, $rootScope, $routeParams, config, mapper) {
+    .controller("ProductListCtrl", function ($scope, $rootScope, $routeParams, $filter, config, mapper) {
         var productIds, item, jsonPart;
-        $scope.categoryId = $routeParams.categoryId;
+
+        $scope.category = {
+            id: $routeParams.categoryId,
+            name: $filter('findBy')('category_id', $rootScope.categories, $routeParams.categoryId).name
+        };
         $scope.currentPage = parseInt($routeParams.page || 1);
         $rootScope.products = [];
 
         var client = new MagentoSoapClient(config.storeUrl);
         client.login(config.storeUsername, config.storePassword).done(function () {
-            client.categoryAssignedProducts($scope.categoryId).done(function (json) {
+            client.categoryAssignedProducts($scope.category.id).done(function (json) {
                 jsonPart = json.callResponse.callReturn.item;
                 jsonPart = (_.isObject(jsonPart) && !_.isArray(jsonPart)) ? [{item: jsonPart.item}] : jsonPart;
 
@@ -22,8 +26,8 @@ angular.module("hiveBitcoinstoreApp")
                     jsonPart = (_.isObject(jsonPart) && !_.isArray(jsonPart)) ? [{item: jsonPart.item}] : jsonPart;
 
                     _.each(jsonPart, function (item) {
-                        item = mapper.build(item);
-                        $rootScope.products.push(item)
+                        var product = mapper.build(item);
+                        $rootScope.products.push(product);
                     });
                     client.productMediaList(productIds).done(function (json) {
                         jsonPart = json.multiCallResponse.multiCallReturn.item;
@@ -31,8 +35,8 @@ angular.module("hiveBitcoinstoreApp")
 
                         _.each(jsonPart, function (item, index) {
                             if (item.item) {
-                                item = mapper.build(item.item);
-                                $rootScope.products[index]["image"] = item;
+                                var mediaInfo = mapper.build(item.item);
+                                $rootScope.products[index]["image"] = mediaInfo;
                             }
                         });
 
@@ -41,8 +45,8 @@ angular.module("hiveBitcoinstoreApp")
                             jsonPart = (_.isObject(jsonPart) && !_.isArray(jsonPart)) ? [{item: jsonPart.item}] : jsonPart;
 
                             _.each(jsonPart, function (item, index) {
-                                item = mapper.build(item);
-                                $rootScope.products[index]["inventory"] = item;
+                                var stockInfo = mapper.build(item);
+                                $rootScope.products[index]["inventory"] = stockInfo;
                             });
                         });
                         $rootScope.$apply();
