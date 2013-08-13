@@ -137,8 +137,55 @@ MagentoSoapClient.prototype.productInfo = function (productIds) {
 };
 
 // Checkout methods
-MagentoSoapClient.prototype.cartCreate = function () {};
-MagentoSoapClient.prototype.cartInfo = function (cartId) {};
+MagentoSoapClient.prototype.cartCreate = function () {
+    var sessionId = this.sessionId,
+        path = "cart.create",
+        deferred = $.Deferred();
+
+    $.soap({
+        method: "ns1:call",
+        params: {
+            sessionId: sessionId,
+            resourcePath: path
+        },
+        success: function (response) {
+            var json = response.toJSON(),
+                cartId = json.Body.callResponse.callReturn.toString();
+            deferred.resolve(cartId);
+        },
+        error: function (response) {
+            var json = response.toJSON();
+            deferred.reject(json);
+        }
+    });
+
+    return deferred.promise();
+};
+
+MagentoSoapClient.prototype.cartInfo = function (cartId) {
+    var sessionId = this.sessionId,
+        path = "cart.info",
+        deferred = $.Deferred();
+
+    $.soap({
+        method: "ns1:call",
+        params: {
+            sessionId: sessionId,
+            resourcePath: path,
+            args: cartId
+        },
+        success: function (response) {
+            var json = response.toJSON();
+            deferred.resolve(json.Body);
+        },
+        error: function (response) {
+            var json = response.toJSON();
+            deferred.reject(json);
+        }
+    });
+
+    return deferred.promise();
+};
 
 MagentoSoapClient.prototype.cartCustomerSet = function (cartId, customer) {};
 MagentoSoapClient.prototype.cartCustomerAddresses = function (cartId, addresses) {};
