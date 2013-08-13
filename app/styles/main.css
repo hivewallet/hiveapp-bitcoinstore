@@ -83,3 +83,14 @@
 .product .product-short-description {
   font-size: 12px;
 }
+
+/* Order summary */
+.order-summary {
+  background-color: #f5f5f5;
+  border: 1px solid #e3e3e3;
+  padding: 50px 60px;
+  margin-bottom: 30px;
+  font-size: 21px;
+  font-weight: 200;
+  line-height: 2.1428571435;
+}
