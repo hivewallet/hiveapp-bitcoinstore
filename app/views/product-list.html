@@ -2,7 +2,7 @@
   <li class="active">{{category.name}}</li>
 </ul>
 
-<p ng-hide="products.length">Loading products...</p>
+<p class="text-center" ng-hide="products.length">Loading...</p>
 
 <ul id="product-list" class="list-group" ng-show="products.length">
   <li class="list-group-item" ng-repeat="product in products" ng-class-odd="'odd'" ng-class-even="'even'">
@@ -12,7 +12,7 @@
       </div>
 
       <div class="col-10">
-        <a ng-href="#/categories/{{categoryId}}/products/{{product.product_id}}" class="product-name">
+        <a ng-href="#/categories/{{category.category_id}}/products/{{product.product_id}}" class="product-name">
           <strong>{{product.name}}</strong>
         </a>
         <div class="product-short-description">

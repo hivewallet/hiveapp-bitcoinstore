@@ -1,4 +1,6 @@
-<ul id="category-list" class="list-group">
+<p class="text-center" ng-hide="categories.length">Loading...</p>
+
+<ul id="category-list" class="list-group" ng-show="categories.length">
   <li class="list-group-item" ng-repeat="category in categories">
     <a href="#/categories/{{category.category_id}}/products">{{category.name}}</a>
   </li>
