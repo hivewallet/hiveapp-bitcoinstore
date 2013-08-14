@@ -9,11 +9,11 @@
 <ul id="product-list" class="list-group" ng-show="products.length">
   <li class="list-group-item" ng-repeat="product in products" ng-class-odd="'odd'" ng-class-even="'even'">
     <div class="row product">
-      <div class="col-2">
+      <div class="col-4">
         <img ng-src="{{product.image.url}}" alt="{{product.name}}" class="product-image">
       </div>
 
-      <div class="col-10">
+      <div class="col-8">
         <a ng-href="#/categories/{{category.category_id}}/products/{{product.product_id}}" class="product-name">
           <strong>{{product.name}}</strong>
         </a>
