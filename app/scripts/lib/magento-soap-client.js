@@ -235,7 +235,8 @@ MagentoSoapClient.prototype.productStockList = function (productIds) {
 
 // Checkout methods
 MagentoSoapClient.prototype.cartCreate = function () {
-    var sessionId = this.sessionId,
+    var self = this,
+        sessionId = this.sessionId,
         path = "cart.create",
         deferred = $.Deferred();
 
@@ -248,8 +249,13 @@ MagentoSoapClient.prototype.cartCreate = function () {
         },
         success: function (response) {
             var json = response.toJSON(),
-                cartId = json.Body.callResponse.callReturn.toString();
-            deferred.resolve(cartId);
+                result;
+
+            self._handleResponse(json, deferred, function () {
+                result = json.Body.callResponse.callReturn.toString();
+                deferred.resolve(result);
+            });
+
         },
         error: function (response) {
             var json = response.toJSON();
@@ -261,7 +267,8 @@ MagentoSoapClient.prototype.cartCreate = function () {
 };
 
 MagentoSoapClient.prototype.cartInfo = function (cartId) {
-    var sessionId = this.sessionId,
+    var self = this,
+        sessionId = this.sessionId,
         path = "cart.info",
         deferred = $.Deferred();
 
@@ -273,8 +280,13 @@ MagentoSoapClient.prototype.cartInfo = function (cartId) {
             args: cartId
         },
         success: function (response) {
-            var json = response.toJSON();
-            deferred.resolve(json.Body);
+            var json = response.toJSON(),
+                result;
+
+            self._handleResponse(json, deferred, function () {
+                result = json.Body.callResponse.callReturn.item;
+                deferred.resolve(result);
+            });
         },
         error: function (response) {
             var json = response.toJSON();
@@ -316,8 +328,13 @@ MagentoSoapClient.prototype.cartCustomerSet = function (cartId, customer) {
     $.soap({
         params: this._serialize(body),
         success: function (response) {
-            var json = response.toJSON();
-            deferred.resolve(json.Body);
+            var json = response.toJSON(),
+                result;
+
+            self._handleResponse(json, deferred, function () {
+                result = json.Body.callResponse.callReturn.item;
+                deferred.resolve(result);
+            });
         },
         error: function (response) {
             var json = response.toJSON();
@@ -364,8 +381,13 @@ MagentoSoapClient.prototype.cartCustomerAddresses = function (cartId, addresses)
     $.soap({
         params: this._serialize(body),
         success: function (response) {
-            var json = response.toJSON();
-            deferred.resolve(json.Body);
+            var json = response.toJSON(),
+                result;
+
+            self._handleResponse(json, deferred, function () {
+                result = json.Body.callResponse.callReturn.item;
+                deferred.resolve(result);
+            });
         },
         error: function (response) {
             var json = response.toJSON();
@@ -417,8 +439,13 @@ MagentoSoapClient.prototype.cartProductAdd = function (cartId, products) {
     $.soap({
         params: this._serialize(body),
         success: function (response) {
-            var json = response.toJSON();
-            deferred.resolve(json.Body);
+            var json = response.toJSON(),
+                result;
+
+            self._handleResponse(json, deferred, function () {
+                result = json.Body.callResponse.callReturn.item;
+                deferred.resolve(result);
+            });
         },
         error: function (response) {
             var json = response.toJSON();
@@ -444,11 +471,11 @@ MagentoSoapClient.prototype.cartShippingList = function (cartId) {
         },
         success: function (response) {
             var json = response.toJSON(),
-                items;
+                result;
 
             self._handleResponse(json, deferred, function () {
-                items = self._arrayWrap(json.Body.callResponse.callReturn.item);
-                deferred.resolve(items);
+                result = self._arrayWrap(json.Body.callResponse.callReturn.item);
+                deferred.resolve(result);
             });
         },
         error: function (response) {
@@ -479,8 +506,13 @@ MagentoSoapClient.prototype.cartShippingMethod = function (cartId, method) {
     $.soap({
         params: this._serialize(body),
         success: function (response) {
-            var json = response.toJSON();
-            deferred.resolve(json.Body);
+            var json = response.toJSON(),
+                result;
+
+            self._handleResponse(json, deferred, function () {
+                result = json.Body.callResponse.callReturn.item;
+                deferred.resolve(result);
+            });
         },
         error: function (response) {
             var json = response.toJSON();
@@ -492,7 +524,8 @@ MagentoSoapClient.prototype.cartShippingMethod = function (cartId, method) {
 };
 
 MagentoSoapClient.prototype.cartPaymentList = function (cartId) {
-    var sessionId = this.sessionId,
+    var self = this,
+        sessionId = this.sessionId,
         path = "cart_payment.list",
         deferred = $.Deferred();
 
@@ -504,8 +537,13 @@ MagentoSoapClient.prototype.cartPaymentList = function (cartId) {
             args: cartId
         },
         success: function (response) {
-            var json = response.toJSON();
-            deferred.resolve(json.Body);
+            var json = response.toJSON(),
+                result;
+
+            self._handleResponse(json, deferred, function () {
+                result = self._arrayWrap(json.Body.callResponse.callReturn.item);
+                deferred.resolve(result);
+            });
         },
         error: function (response) {
             var json = response.toJSON();
@@ -544,8 +582,13 @@ MagentoSoapClient.prototype.cartPaymentMethod = function (cartId, method) {
     $.soap({
         params: this._serialize(body),
         success: function (response) {
-            var json = response.toJSON();
-            deferred.resolve(json.Body);
+            var json = response.toJSON(),
+                result;
+
+            self._handleResponse(json, deferred, function () {
+                result = json.Body.callResponse.callReturn.item;
+                deferred.resolve(result);
+            });
         },
         error: function (response) {
             var json = response.toJSON();
@@ -557,7 +600,8 @@ MagentoSoapClient.prototype.cartPaymentMethod = function (cartId, method) {
 };
 
 MagentoSoapClient.prototype.cartOrder = function (cartId) {
-    var sessionId = this.sessionId,
+    var self = this,
+        sessionId = this.sessionId,
         path = "cart.order",
         deferred = $.Deferred();
 
@@ -570,9 +614,12 @@ MagentoSoapClient.prototype.cartOrder = function (cartId) {
         },
         success: function (response) {
             var json = response.toJSON(),
-                orderId = json.Body.callResponse.callReturn.toString();
+                result;
 
-            deferred.resolve(orderId);
+            self._handleResponse(json, deferred, function () {
+                result = json.Body.callResponse.callReturn.toString();
+                deferred.resolve(result);
+            });
         },
         error: function (response) {
             var json = response.toJSON();

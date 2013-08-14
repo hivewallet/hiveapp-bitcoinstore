@@ -56,27 +56,27 @@ angular.module("hiveBitcoinstoreApp")
                 function (callback) {
                     client.login(config.storeUsername, config.storePassword)
                         .done(function () { callback(null); })
-                        .fail(function () { callback({}); });
+                        .fail(function () { callback(arguments); });
                 },
                 function (callback) {
                     client.cartCreate()
                         .done(function (cartId) { callback(null, cartId); })
-                        .fail(function () { callback({}); });
+                        .fail(function () { callback(arguments); });
                 },
                 function (cartId, callback) {
                     client.cartCustomerSet(cartId, customer)
                         .done(function () { callback(null, cartId); })
-                        .fail(function () { callback({}); });
+                        .fail(function () { callback(arguments); });
                 },
                 function (cartId, callback) {
                     client.cartCustomerAddresses(cartId, addresses)
                         .done(function () { callback(null, cartId); })
-                        .fail(function () { callback({}); });
+                        .fail(function () { callback(arguments); });
                 },
                 function (cartId, callback) {
                     client.cartProductAdd(cartId, product)
                         .done(function () { callback(null, cartId); })
-                        .fail(function () { callback({}); });
+                        .fail(function () { callback(arguments); });
                 },
                 function (cartId, callback) {
                     client.cartShippingList(cartId)
@@ -89,30 +89,32 @@ angular.module("hiveBitcoinstoreApp")
                                 callback({});
                             }
                         })
-                        .fail(function () { callback({}); });
+                        .fail(function () { callback(arguments); });
                 },
                 function (cartId, shippingMethod, callback) {
                     client.cartShippingMethod(cartId, shippingMethod)
                         .done(function () { callback(null, cartId); })
-                        .fail(function () { callback({}); });
+                        .fail(function () { callback(arguments); });
                 },
                 function (cartId, callback) {
                     var paymentMethod = "checkmo";
                     client.cartPaymentMethod(cartId, paymentMethod)
                         .done(function () { callback(null, cartId); })
-                        .fail(function () { callback({}); });
+                        .fail(function () { callback(arguments); });
                 },
                 function (cartId, callback) {
                     client.cartOrder(cartId)
                         .done(function (orderId) { callback(null, orderId); })
-                        .fail(function () { callback({}); });
+                        .fail(function () { callback(arguments); });
                 }
             ], function (err, orderId) {
-                if (err) throw "There was an error during processing the payment";
-
-                // Redirect to order summary page
-                $location.path("/orders/" + orderId).replace();
-                $scope.$apply(); // Force path change
+                if (err) {
+                    $rootScope.errorHandler.apply($rootScope, err);
+                } else {
+                    // Redirect to order summary page
+                    $location.path("/orders/" + orderId).replace();
+                    $scope.$apply(); // Force path change
+                }
             });
         };
     });

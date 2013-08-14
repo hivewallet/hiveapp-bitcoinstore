@@ -6,12 +6,25 @@ angular.module("hiveBitcoinstoreApp")
 
         $rootScope.categories = [];
 
-        client.login(config.storeUsername, config.storePassword).done(function () {
-            client.categoryLevel(config.storeRootCategoryId).done(function (categories) {
+        async.waterfall([
+            function (callback) {
+                client.login(config.storeUsername, config.storePassword)
+                    .done(function () { callback(null); })
+                    .fail(function () { callback(arguments); });
+            },
+            function (callback) {
+                client.categoryLevel(config.storeRootCategoryId)
+                    .done(function (categories) { callback(null, categories); })
+                    .fail(function () { callback(arguments); });
+            }
+        ], function (err, categories) {
+            if (err) {
+                $rootScope.errorHandler.apply($rootScope, err);
+            } else {
                 _.each(categories, function (item) {
                     $rootScope.categories.push(mapper.build(item));
                 });
                 $rootScope.$apply();
-            }).fail($rootScope.errorHandler);;
-        }).fail($rootScope.errorHandler);
+            }
+        });
     });
