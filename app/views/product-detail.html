@@ -37,7 +37,7 @@
         </div>
       </div>
       <div class="col-1 product-button">
-        <a ng-click="buy(product.product_id)" ng-disabled="product.inventory.is_in_stock == '0' || loading" class="btn btn-danger">
+        <a ng-click="buy(product.product_id)" ng-disabled="!product.inventory.is_in_stock || loading" class="btn btn-danger">
           Buy
         </a>
       </div>

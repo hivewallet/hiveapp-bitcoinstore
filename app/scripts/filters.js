@@ -3,7 +3,7 @@
 angular.module("btcstoreFilters", [])
     .filter("inStock", function () {
         return function (input) {
-            return input === "1" ? "In stock" : "Out of stock";
+            return input ? "In stock" : "Out of stock";
         };
     })
     .filter('findBy', function() {
