@@ -2,50 +2,75 @@
 
 angular.module("hiveBitcoinstoreApp")
     .controller("ProductListCtrl", function ($scope, $rootScope, $routeParams, $location, $filter, config, mapper) {
-        var client = new MagentoSoapClient(config.storeUrl),
-            productIds;
+        var client = new MagentoSoapClient(config.storeUrl);
 
         $scope.category = $filter('findBy')('category_id', $rootScope.categories, $routeParams.categoryId);
         $rootScope.products = [];
         $scope.currentPage = parseInt($routeParams.page || 1);
 
         if ($scope.category) {
-            client.login(config.storeUsername, config.storePassword).done(function () {
-                // client.categoryAssignedProducts($scope.category.category_id).done(function (json) {
-                //     productIds = _.map(json, function (item) {
-                //         return item.item[0].value.text;
-                //     });
-
-                //     productIds = productIds.slice(0, 25);
-
-                    // Hardcoded product IDs till we have access to category.assignedProducts
-                    productIds = ["1248219", "1343479"];
-                    client.productInfo(productIds).done(function (json) {
-                        _.each(json, function (item) {
-                            var product = mapper.build(item);
-                            $rootScope.products.push(product);
-                        });
-
-                        client.productMediaList(productIds).done(function (json) {
-                            _.each(json, function (item, index) {
+            async.waterfall([
+                function (callback) {
+                    client.login(config.storeUsername, config.storePassword)
+                        .done(function () { callback(null); })
+                        .fail(function () { callback(arguments); });
+                },
+                // function (callback) {
+                //     client.categoryAssignedProducts($scope.category.category_id)
+                //         .done(function (result) {
+                //             // Limit number of displayed products to 25
+                //             var productIds  =  _.map(result, function (item) {
+                //                 return item.item[0].value.text;
+                //             }).slice(0, 25);
+                //             callback(null, productIds);
+                //         })
+                //         .fail(function () { callback(arguments); });
+                // },
+                function (callback) {
+                    callback(null, ["1248219", "1343479"]);
+                },
+                function (productIds, callback) {
+                    client.productInfo(productIds)
+                        .done(function (result) {
+                            _.each(result, function (item) {
+                                var product = mapper.build(item);
+                                $rootScope.products.push(product);
+                            });
+                            callback(null, productIds);
+                        })
+                        .fail(function () { callback(arguments); });
+                },
+                function (productIds, callback) {
+                    client.productMediaList(productIds)
+                        .done(function (result) {
+                            _.each(result, function (item, index) {
                                 if (item.item) {
                                     var mediaInfo = mapper.build(item.item);
                                     $rootScope.products[index]["image"] = mediaInfo;
                                 }
                             });
-
-                            client.productStockList(productIds).done(function (json) {
-                                _.each(json, function (item, index) {
-                                    var stockInfo = mapper.build(item);
-                                    $rootScope.products[index]["inventory"] = stockInfo;
-                                });
-                            }).fail($rootScope.errorHandler);;
-
-                            $rootScope.$apply();
-                        }).fail($rootScope.errorHandler);;
-                    }).fail($rootScope.errorHandler);;
-                }).fail($rootScope.errorHandler);
-            // }).fail($rootScope.errorHandler);
+                            callback(null, productIds);
+                        })
+                        .fail(function () { callback(arguments); });
+                },
+                function (productIds, callback) {
+                    client.productStockList(productIds)
+                        .done(function (result) {
+                            _.each(result, function (item, index) {
+                                var stockInfo = mapper.build(item);
+                                $rootScope.products[index]["inventory"] = stockInfo;
+                            });
+                            callback(null);
+                        })
+                        .fail(function () { callback(arguments); });
+                }
+            ], function (err) {
+                if (err) {
+                    $rootScope.errorHandler.apply($rootScope, err);
+                } else {
+                    $rootScope.$apply();
+                }
+            });
         } else {
             $location.path("/");
         }
