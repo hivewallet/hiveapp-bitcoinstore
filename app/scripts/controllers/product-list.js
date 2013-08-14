@@ -60,8 +60,9 @@ angular.module("hiveBitcoinstoreApp")
                     client.productStockList(productIds)
                         .done(function (result) {
                             _.each(result, function (item, index) {
-                                var stockInfo = mapper.build(item);
-                                stockInfo["is_in_stock"] = (stockInfo["is_in_stock"] === "true" || stockInfo["is_in_stock"] === "1");
+                                var stockInfo = mapper.build(item),
+                                    in_stock = stockInfo.is_in_stock;
+                                stockInfo.is_in_stock = in_stock === "true" || in_stock === "1";
                                 $rootScope.products[index]["inventory"] = stockInfo;
                             });
                             callback(null);
