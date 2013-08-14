@@ -51,30 +51,68 @@ angular.module("hiveBitcoinstoreApp")
             // Disable form button and display info about payment being processed
             $scope.loading = true;
 
-            client.login(config.storeUsername, config.storePassword).done(function () {
-                client.cartCreate().done(function (cartId) {
-                    client.cartCustomerSet(cartId, customer).done(function () {
-                        client.cartCustomerAddresses(cartId, addresses).done(function () {
-                            client.cartProductAdd(cartId, product).done(function () {
-                                client.cartShippingList(cartId).done(function (shippingMethods) {
-                                    // TODO: Fail if there are no shipping methods
-                                    var shippingMethod = mapper.build(shippingMethods[0]).code;
+            // TODO Add back $rootScope.errorHandler
+            async.waterfall([
+                function (callback) {
+                    client.login(config.storeUsername, config.storePassword)
+                        .done(function () { callback(null); })
+                        .fail(function () { callback({}); });
+                },
+                function (callback) {
+                    client.cartCreate()
+                        .done(function (cartId) { callback(null, cartId); })
+                        .fail(function () { callback({}); });
+                },
+                function (cartId, callback) {
+                    client.cartCustomerSet(cartId, customer)
+                        .done(function () { callback(null, cartId); })
+                        .fail(function () { callback({}); });
+                },
+                function (cartId, callback) {
+                    client.cartCustomerAddresses(cartId, addresses)
+                        .done(function () { callback(null, cartId); })
+                        .fail(function () { callback({}); });
+                },
+                function (cartId, callback) {
+                    client.cartProductAdd(cartId, product)
+                        .done(function () { callback(null, cartId); })
+                        .fail(function () { callback({}); });
+                },
+                function (cartId, callback) {
+                    client.cartShippingList(cartId)
+                        .done(function (shippingMethods) {
+                            var shippingMethod;
+                            if (shippingMethods.length) {
+                                shippingMethod = mapper.build(shippingMethods[0]).code;
+                                callback(null, cartId, shippingMethod);
+                            } else {
+                                callback({});
+                            }
+                        })
+                        .fail(function () { callback({}); });
+                },
+                function (cartId, shippingMethod, callback) {
+                    client.cartShippingMethod(cartId, shippingMethod)
+                        .done(function () { callback(null, cartId); })
+                        .fail(function () { callback({}); });
+                },
+                function (cartId, callback) {
+                    var paymentMethod = "checkmo";
+                    client.cartPaymentMethod(cartId, paymentMethod)
+                        .done(function () { callback(null, cartId); })
+                        .fail(function () { callback({}); });
+                },
+                function (cartId, callback) {
+                    client.cartOrder(cartId)
+                        .done(function (orderId) { callback(null, orderId); })
+                        .fail(function () { callback({}); });
+                }
+            ], function (err, orderId) {
+                if (err) throw "There was an error during processing the payment";
 
-                                    client.cartShippingMethod(cartId, shippingMethod).done(function () {
-                                        var paymentMethod = "checkmo";
-
-                                        client.cartPaymentMethod(cartId, paymentMethod).done(function () {
-                                            client.cartOrder(cartId).done(function (orderId) {
-                                                $location.path("/orders/" + orderId).replace();
-                                                $scope.$apply(); // Force path change
-                                            }).fail($rootScope.errorHandler);;
-                                        }).fail($rootScope.errorHandler);;
-                                    }).fail($rootScope.errorHandler);;
-                                }).fail($rootScope.errorHandler);;
-                            }).fail($rootScope.errorHandler);;
-                        }).fail($rootScope.errorHandler);;
-                    }).fail($rootScope.errorHandler);;
-                }).fail($rootScope.errorHandler);;
-            }).fail($rootScope.errorHandler);;
+                // Redirect to order summary page
+                $location.path("/orders/" + orderId).replace();
+                $scope.$apply(); // Force path change
+            });
         };
     });
