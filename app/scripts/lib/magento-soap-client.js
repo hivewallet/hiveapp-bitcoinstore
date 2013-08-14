@@ -36,8 +36,7 @@ MagentoSoapClient.prototype.login = function (username, apiKey) {
             });
         },
         error: function (response) {
-            var json = response.toJSON();
-            deferred.reject(json);
+            deferred.reject(response, response.httpCode, response.httpText);
         }
     });
     return deferred.promise();
@@ -74,8 +73,7 @@ MagentoSoapClient.prototype.categoryLevel = function (categoryId) {
             });
         },
         error: function (response) {
-            var json = response.toJSON();
-            deferred.reject(json);
+            deferred.reject(response, response.httpCode, response.httpText);
         }
     });
 
@@ -105,8 +103,7 @@ MagentoSoapClient.prototype.categoryAssignedProducts = function (categoryId) {
             });
         },
         error: function (response) {
-            var json = response.toJSON();
-            deferred.reject(json);
+            deferred.reject(response, response.httpCode, response.httpText);
         }
     });
 
@@ -146,8 +143,7 @@ MagentoSoapClient.prototype.productInfo = function (productIds) {
             });
         },
         error: function (response) {
-            var json = response.toJSON();
-            deferred.reject(json);
+            deferred.reject(response, response.httpCode, response.httpText);
         }
     });
 
@@ -186,8 +182,7 @@ MagentoSoapClient.prototype.productMediaList = function (productIds) {
             });
         },
         error: function (response) {
-            var json = response.toJSON();
-            deferred.reject(json);
+            deferred.reject(response, response.httpCode, response.httpText);
         }
     });
 
@@ -225,8 +220,7 @@ MagentoSoapClient.prototype.productStockList = function (productIds) {
             });
         },
         error: function (response) {
-            var json = response.toJSON();
-            deferred.reject(json);
+            deferred.reject(response, response.httpCode, response.httpText);
         }
     });
 
@@ -258,8 +252,7 @@ MagentoSoapClient.prototype.cartCreate = function () {
 
         },
         error: function (response) {
-            var json = response.toJSON();
-            deferred.reject(json);
+            deferred.reject(response, response.httpCode, response.httpText);
         }
     });
 
@@ -289,8 +282,7 @@ MagentoSoapClient.prototype.cartInfo = function (cartId) {
             });
         },
         error: function (response) {
-            var json = response.toJSON();
-            deferred.reject(json);
+            deferred.reject(response, response.httpCode, response.httpText);
         }
     });
 
@@ -337,8 +329,7 @@ MagentoSoapClient.prototype.cartCustomerSet = function (cartId, customer) {
             });
         },
         error: function (response) {
-            var json = response.toJSON();
-            deferred.reject(json);
+            deferred.reject(response, response.httpCode, response.httpText);
         }
     });
 
@@ -390,8 +381,7 @@ MagentoSoapClient.prototype.cartCustomerAddresses = function (cartId, addresses)
             });
         },
         error: function (response) {
-            var json = response.toJSON();
-            deferred.reject(json);
+            deferred.reject(response, response.httpCode, response.httpText);
         }
     });
 
@@ -448,8 +438,7 @@ MagentoSoapClient.prototype.cartProductAdd = function (cartId, products) {
             });
         },
         error: function (response) {
-            var json = response.toJSON();
-            deferred.reject(json);
+            deferred.reject(response, response.httpCode, response.httpText);
         }
     });
 
@@ -479,8 +468,7 @@ MagentoSoapClient.prototype.cartShippingList = function (cartId) {
             });
         },
         error: function (response) {
-            var json = response.toJSON();
-            deferred.reject(json);
+            deferred.reject(response, response.httpCode, response.httpText);
         }
     });
 
@@ -515,8 +503,7 @@ MagentoSoapClient.prototype.cartShippingMethod = function (cartId, method) {
             });
         },
         error: function (response) {
-            var json = response.toJSON();
-            deferred.reject(json);
+            deferred.reject(response, response.httpCode, response.httpText);
         }
     });
 
@@ -546,8 +533,7 @@ MagentoSoapClient.prototype.cartPaymentList = function (cartId) {
             });
         },
         error: function (response) {
-            var json = response.toJSON();
-            deferred.reject(json);
+            deferred.reject(response, response.httpCode, response.httpText);
         }
     });
 
@@ -591,8 +577,7 @@ MagentoSoapClient.prototype.cartPaymentMethod = function (cartId, method) {
             });
         },
         error: function (response) {
-            var json = response.toJSON();
-            deferred.reject(json);
+            deferred.reject(response, response.httpCode, response.httpText);
         }
     });
 
@@ -622,8 +607,7 @@ MagentoSoapClient.prototype.cartOrder = function (cartId) {
             });
         },
         error: function (response) {
-            var json = response.toJSON();
-            deferred.reject(json);
+            deferred.reject(response, response.httpCode, response.httpText);
         }
     });
 

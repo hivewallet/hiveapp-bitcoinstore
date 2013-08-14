@@ -51,7 +51,6 @@ angular.module("hiveBitcoinstoreApp")
             // Disable form button and display info about payment being processed
             $scope.loading = true;
 
-            // TODO Add back $rootScope.errorHandler
             async.waterfall([
                 function (callback) {
                     client.login(config.storeUsername, config.storePassword)

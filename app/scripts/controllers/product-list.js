@@ -15,6 +15,8 @@ angular.module("hiveBitcoinstoreApp")
                         .done(function () { callback(null); })
                         .fail(function () { callback(arguments); });
                 },
+                // TODO: switch when access to assignedProducts is granted
+                //
                 // function (callback) {
                 //     client.categoryAssignedProducts($scope.category.category_id)
                 //         .done(function (result) {
@@ -27,6 +29,7 @@ angular.module("hiveBitcoinstoreApp")
                 //         .fail(function () { callback(arguments); });
                 // },
                 function (callback) {
+                    // hardcoded product ids for now
                     callback(null, ["1248219", "1343479"]);
                 },
                 function (productIds, callback) {
