@@ -10,36 +10,41 @@ angular.module("hiveBitcoinstoreApp")
         if (!$scope.category || !$scope.product) $location.path("/");
 
         $scope.buy = function (productId) {
+            var customerInfo;
+
+            bitcoin.getClientInfo(function (clientInfo) {
+                customerInfo = clientInfo;
+            });
+
             var customer = {
-                firstname: "John",
-                lastname: "Doe",
-                email: "johndoe@example.com",
-                mode: "guest"
+                firstname: customerInfo.firstname,
+                lastname:  customerInfo.lastname,
+                email:     customerInfo.email,
+                mode:      "guest"
             };
 
             var addresses = [
                 {
-                    mode: "shipping",
-                    firstname: "John",
-                    lastname: "Doe",
-                    street: "Sesame Str",
-                    city: "New York",
-                    region_id: 43,
-                    postcode: "10000",
-                    country_id: "US",
-                    telephone: "0123456789"
+                    mode:       "shipping",
+                    firstname:  customerInfo.firstname,
+                    lastname:   customerInfo.lastname,
+                    street:     customerInfo.street,
+                    city:       customerInfo.city,
+                    region_id:  43, // missing
+                    postcode:   customerInfo.zipcode,
+                    country_id: "US", // missing
+                    telephone:  "0" // missing
                 },
                 {
-                    mode: "billing",
-                    firstname: "John",
-                    lastname: "Doe",
-                    email: "johndoe@example.com",
-                    street: "Sesame Str",
-                    city: "New York",
-                    region_id: 43,
-                    postcode: "10000",
-                    country_id: "US",
-                    telephone: "0123456789"
+                    mode:       "billing",
+                    firstname:  customerInfo.firstname,
+                    lastname:   customerInfo.lastname,
+                    street:     customerInfo.street,
+                    city:       customerInfo.city,
+                    region_id:  43, // missing
+                    postcode:   customerInfo.zipcode,
+                    country_id: "US", // missing
+                    telephone:  "0" // missing
                 }
             ];
 
