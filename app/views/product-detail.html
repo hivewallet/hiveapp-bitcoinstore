@@ -5,50 +5,52 @@
 </ul>
 
 <div class="container product" id="product-detail" ng-show="product">
-  <div class="row row-loose">
-    <div class="col-4">
-      <img ng-src="{{product.image.url}}" alt="{{product.name}}" class="product-image">
+  <div class="col-12">
+    <div class="row row-loose">
+      <div class="col-4">
+        <img ng-src="{{product.image.url}}" alt="{{product.name}}" class="product-image">
+      </div>
+
+      <div class="col-8">
+        <p class="product-name">
+          <strong>{{product.name}}</strong>
+        </p>
+        <div class="product-availability">
+          Availability: {{product.inventory.is_in_stock | inStock}}
+        </div>
+        <div class="product-btc-price">
+          {{product.special_price | number:2}} BTC
+        </div>
+        <div class="product-price">
+          <strong>&#36;{{product.price | number:2}}</strong>
+        </div>
+      </div>
     </div>
 
-    <div class="col-8">
-      <p class="product-name">
-        <strong>{{product.name}}</strong>
-      </p>
-      <div class="product-availability">
-        Availability: {{product.inventory.is_in_stock | inStock}}
+    <div class="row row-loose product-action">
+      <div class="col-4">
+        <div class="product-btc-price">
+          {{product.special_price | number:2}} BTC
+        </div>
+        <div class="product-price">
+          <strong>&#36;{{product.price | number:2}}</strong>
+        </div>
       </div>
-      <div class="product-btc-price">
-        {{product.special_price | number:2}} BTC
+      <div class="col-1 product-button">
+        <a ng-click="buy(product.product_id)" ng-disabled="!product.inventory.is_in_stock || loading" class="btn btn-danger">
+          Buy
+        </a>
       </div>
-      <div class="product-price">
-        <strong>&#36;{{product.price | number:2}}</strong>
+      <div class="col-7 product-info">
+        <span ng-show="loading">Please wait while we're processing your order.</span>
       </div>
     </div>
-  </div>
 
-  <div class="row row-loose product-action">
-    <div class="col-4">
-      <div class="product-btc-price">
-        {{product.special_price | number:2}} BTC
+    <div class="row row-loose">
+      <div class="col-12">
+        <h4>Details</h4>
+        <div>{{product.description}}</div>
       </div>
-      <div class="product-price">
-        <strong>&#36;{{product.price | number:2}}</strong>
-      </div>
-    </div>
-    <div class="col-1 product-button">
-      <a ng-click="buy(product.product_id)" ng-disabled="!product.inventory.is_in_stock || loading" class="btn btn-danger">
-        Buy
-      </a>
-    </div>
-    <div class="col-7 product-info">
-      <span ng-show="loading">Please wait while we're processing your order.</span>
-    </div>
-  </div>
-
-  <div class="row row-loose">
-    <div class="col-12">
-      <h4>Details</h4>
-      <div>{{product.description}}</div>
     </div>
   </div>
 </div>
