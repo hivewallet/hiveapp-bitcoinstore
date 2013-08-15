@@ -43,18 +43,28 @@ angular.module("hiveBitcoinstoreApp")
                         })
                         .fail(function () { callback(arguments); });
                 },
+                // TODO: switch when access to productMediaList is granted
+                // function (productIds, callback) {
+                //     client.productMediaList(productIds)
+                //         .done(function (result) {
+                //             _.each(result, function (item, index) {
+                //                 if (item.item) {
+                //                     var mediaInfo = mapper.build(item.item);
+                //                     $rootScope.products[index]["image"] = mediaInfo;
+                //                 }
+                //             });
+                //             callback(null, productIds);
+                //         })
+                //         .fail(function () { callback(arguments); });
+                // },
                 function (productIds, callback) {
-                    client.productMediaList(productIds)
-                        .done(function (result) {
-                            _.each(result, function (item, index) {
-                                if (item.item) {
-                                    var mediaInfo = mapper.build(item.item);
-                                    $rootScope.products[index]["image"] = mediaInfo;
-                                }
-                            });
-                            callback(null, productIds);
-                        })
-                        .fail(function () { callback(arguments); });
+                    $rootScope.products[0]["image"] = {
+                        url: "https://content.etilize.com/images/364/364/1016045860.jpg"
+                    };
+                    $rootScope.products[1]["image"] = {
+                        url: "https://content.etilize.com/images/364/364/1019248163.jpg"
+                    };
+                    callback(null, productIds);
                 },
                 function (productIds, callback) {
                     client.productStockList(productIds)
