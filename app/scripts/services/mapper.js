@@ -9,5 +9,5 @@ angular.module("hiveBitcoinstoreApp").factory("mapper", function () {
             });
             return attributes;
         }
-    }
+    };
 });

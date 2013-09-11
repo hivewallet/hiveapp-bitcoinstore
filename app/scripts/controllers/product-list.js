@@ -15,22 +15,16 @@ angular.module("hiveBitcoinstoreApp")
                         .done(function () { callback(null); })
                         .fail(function () { callback(arguments); });
                 },
-                // TODO: switch when access to assignedProducts is granted
-                //
-                // function (callback) {
-                //     client.categoryAssignedProducts($scope.category.category_id)
-                //         .done(function (result) {
-                //             // Limit number of displayed products to 25
-                //             var productIds  =  _.map(result, function (item) {
-                //                 return item.item[0].value.text;
-                //             }).slice(0, 25);
-                //             callback(null, productIds);
-                //         })
-                //         .fail(function () { callback(arguments); });
-                // },
                 function (callback) {
-                    // hardcoded product ids for now
-                    callback(null, ["1248219", "1343479"]);
+                    client.categoryAssignedProducts($scope.category.category_id)
+                        .done(function (result) {
+                            // Limit number of displayed products to 25
+                            var productIds  =  _.map(result, function (item) {
+                                return item.item[0].value.text;
+                            }).slice(0, 25);
+                            callback(null, productIds);
+                        })
+                        .fail(function () { callback(arguments); });
                 },
                 function (productIds, callback) {
                     client.productInfo(productIds)
@@ -43,28 +37,19 @@ angular.module("hiveBitcoinstoreApp")
                         })
                         .fail(function () { callback(arguments); });
                 },
-                // TODO: switch when access to productMediaList is granted
-                // function (productIds, callback) {
-                //     client.productMediaList(productIds)
-                //         .done(function (result) {
-                //             _.each(result, function (item, index) {
-                //                 if (item.item) {
-                //                     var mediaInfo = mapper.build(item.item);
-                //                     $rootScope.products[index]["image"] = mediaInfo;
-                //                 }
-                //             });
-                //             callback(null, productIds);
-                //         })
-                //         .fail(function () { callback(arguments); });
-                // },
                 function (productIds, callback) {
-                    $rootScope.products[0]["image"] = {
-                        url: "https://content.etilize.com/images/364/364/1016045860.jpg"
-                    };
-                    $rootScope.products[1]["image"] = {
-                        url: "https://content.etilize.com/images/364/364/1019248163.jpg"
-                    };
-                    callback(null, productIds);
+                    client.productMediaList(productIds)
+                        .done(function (result) {
+                            _.each(result, function (item, index) {
+                                if (item.item) {
+                                    var image = _.isArray(item.item) ? item.item[0] : item.item,
+                                        mediaInfo = mapper.build(image);
+                                    $rootScope.products[index]["image"] = mediaInfo;
+                                }
+                            });
+                            callback(null, productIds);
+                        })
+                        .fail(function () { callback(arguments); });
                 },
                 function (productIds, callback) {
                     client.productStockList(productIds)
