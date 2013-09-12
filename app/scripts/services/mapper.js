@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-angular.module("hiveBitcoinstoreApp").factory("mapper", function () {
+angular.module('hiveBitcoinstoreApp').factory('mapper', function () {
     return {
         build: function (item) {
             var attributes = {};

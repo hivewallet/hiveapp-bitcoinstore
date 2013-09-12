@@ -1,45 +1,47 @@
-"use strict";
+'use strict';
 
-angular.module("hiveBitcoinstoreApp")
-    .controller("ProductDetailCtrl", function ($scope, $rootScope, $routeParams, $location, $filter, config, mapper) {
+angular.module('hiveBitcoinstoreApp')
+    .controller('ProductDetailCtrl', function ($scope, $rootScope, $routeParams, $location, $filter, config, mapper) {
         var client = new MagentoSoapClient(config.storeUrl);
 
         $scope.category = $filter('findBy')('category_id', $rootScope.categories, $routeParams.categoryId);
         $scope.product = $filter('findBy')('product_id', $rootScope.products, $routeParams.productId);
 
-        if (!$scope.category || !$scope.product) $location.path("/");
+        if (!$scope.category || !$scope.product) {
+            $location.path('/');
+        }
 
-        $scope.buy = function (productId) {
+        $scope.buy = function () {
             bitcoin.getClientInfo(function (clientInfo) {
                 var customer = {
                     firstname: clientInfo.firstname,
                     lastname:  clientInfo.lastname,
                     email:     clientInfo.email,
-                    mode:      "guest"
+                    mode:      'guest'
                 };
 
                 var addresses = [
                     {
-                        mode:       "shipping",
+                        mode:       'shipping',
                         firstname:  clientInfo.firstname,
                         lastname:   clientInfo.lastname,
                         street:     clientInfo.street,
                         city:       clientInfo.city,
                         region_id:  43, // missing
                         postcode:   clientInfo.zipcode,
-                        country_id: "US", // missing
-                        telephone:  "0" // missing
+                        country_id: 'US', // missing
+                        telephone:  '0' // missing
                     },
                     {
-                        mode:       "billing",
+                        mode:       'billing',
                         firstname:  clientInfo.firstname,
                         lastname:   clientInfo.lastname,
                         street:     clientInfo.street,
                         city:       clientInfo.city,
                         region_id:  43, // missing
                         postcode:   clientInfo.zipcode,
-                        country_id: "US", // missing
-                        telephone:  "0" // missing
+                        country_id: 'US', // missing
+                        telephone:  '0' // missing
                     }
                 ];
 
@@ -96,7 +98,7 @@ angular.module("hiveBitcoinstoreApp")
                             .fail(function () { callback(arguments); });
                     },
                     function (cartId, callback) {
-                        var paymentMethod = "checkmo";
+                        var paymentMethod = 'checkmo';
                         client.cartPaymentMethod(cartId, paymentMethod)
                             .done(function () { callback(null, cartId); })
                             .fail(function () { callback(arguments); });
@@ -111,7 +113,7 @@ angular.module("hiveBitcoinstoreApp")
                         $rootScope.errorHandler.apply($rootScope, err);
                     } else {
                         // Redirect to order summary page
-                        $location.path("/orders/" + orderId).replace();
+                        $location.path('/orders/' + orderId).replace();
                         $scope.$apply(); // Force path change
                     }
                 });

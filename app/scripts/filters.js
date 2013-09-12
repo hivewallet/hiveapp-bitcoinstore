@@ -1,9 +1,9 @@
-"use strict";
+'use strict';
 
-angular.module("btcstoreFilters", [])
-    .filter("inStock", function () {
+angular.module('btcstoreFilters', [])
+    .filter('inStock', function () {
         return function (input) {
-            return input ? "In stock" : "Out of stock";
+            return input ? 'In stock' : 'Out of stock';
         };
     })
     .filter('findBy', function() {

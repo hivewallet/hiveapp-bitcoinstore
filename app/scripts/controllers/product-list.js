@@ -1,12 +1,12 @@
-"use strict";
+'use strict';
 
-angular.module("hiveBitcoinstoreApp")
-    .controller("ProductListCtrl", function ($scope, $rootScope, $routeParams, $location, $filter, config, mapper) {
+angular.module('hiveBitcoinstoreApp')
+    .controller('ProductListCtrl', function ($scope, $rootScope, $routeParams, $location, $filter, config, mapper) {
         var client = new MagentoSoapClient(config.storeUrl);
 
         $scope.category = $filter('findBy')('category_id', $rootScope.categories, $routeParams.categoryId);
         $rootScope.products = [];
-        $scope.currentPage = parseInt($routeParams.page || 1);
+        $scope.currentPage = parseInt($routeParams.page || 1, 10);
 
         if ($scope.category) {
             async.waterfall([
@@ -44,7 +44,7 @@ angular.module("hiveBitcoinstoreApp")
                                 if (item.item) {
                                     var image = _.isArray(item.item) ? item.item[0] : item.item,
                                         mediaInfo = mapper.build(image);
-                                    $rootScope.products[index]["image"] = mediaInfo;
+                                    $rootScope.products[index].image = mediaInfo;
                                 }
                             });
                             callback(null, productIds);
@@ -57,8 +57,8 @@ angular.module("hiveBitcoinstoreApp")
                             _.each(result, function (item, index) {
                                 var stockInfo = mapper.build(item),
                                     in_stock = stockInfo.is_in_stock;
-                                stockInfo.is_in_stock = in_stock === "true" || in_stock === "1";
-                                $rootScope.products[index]["inventory"] = stockInfo;
+                                stockInfo.is_in_stock = in_stock === 'true' || in_stock === '1';
+                                $rootScope.products[index].inventory = stockInfo;
                             });
                             callback(null);
                         })
@@ -72,6 +72,6 @@ angular.module("hiveBitcoinstoreApp")
                 }
             });
         } else {
-            $location.path("/");
+            $location.path('/');
         }
     });

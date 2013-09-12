@@ -1,7 +1,7 @@
-"use strict";
+'use strict';
 
-angular.module("hiveBitcoinstoreApp")
-    .controller("CategoryListCtrl", function ($scope, $rootScope, config, mapper) {
+angular.module('hiveBitcoinstoreApp')
+    .controller('CategoryListCtrl', function ($scope, $rootScope, config, mapper) {
         var client = new MagentoSoapClient(config.storeUrl);
 
         $rootScope.categories = [];

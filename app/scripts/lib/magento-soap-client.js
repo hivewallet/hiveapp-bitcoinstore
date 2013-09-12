@@ -2,11 +2,13 @@
 // - handle SOAP errors in success callbacks and call deferred.reject
 // - figure out storeId and websiteId for test server
 
+'use strict';
+
 var MagentoSoapClient = function (url) {
     this.url = url;
     this.sessionId = null;
-    this.storeId = "1";
-    this.websiteId = "1";
+    this.storeId = '1';
+    this.websiteId = '1';
 
     $.soap({
         url: this.url,
@@ -20,7 +22,7 @@ MagentoSoapClient.prototype.login = function (username, apiKey) {
         deferred = $.Deferred();
 
     $.soap({
-        method: "ns1:login",
+        method: 'ns1:login',
         params: {
             username: username,
             apiKey: apiKey
@@ -46,17 +48,17 @@ MagentoSoapClient.prototype.login = function (username, apiKey) {
 MagentoSoapClient.prototype.categoryLevel = function (categoryId) {
     var self = this,
         sessionId = this.sessionId,
-        path = "category.level",
+        path = 'category.level',
         args = [this.storeId, this.websiteId, categoryId],
         deferred = $.Deferred(),
         body;
 
-    body = xml("ns1:call", {}, function () {
-        this.xml("sessionId", {}, function () { this.text(sessionId); });
-        this.xml("resourcePath", {}, function () { this.text(path); });
-        this.xml("args", self._xmlStringArrayType(args.length), function () {
+    body = xml('ns1:call', {}, function () {
+        this.xml('sessionId', {}, function () { this.text(sessionId); });
+        this.xml('resourcePath', {}, function () { this.text(path); });
+        this.xml('args', self._xmlStringArrayType(args.length), function () {
             for (var i = 0; i < args.length; i++) {
-                this.xml("item", {}, function () { this.text(args[i]); });
+                this.xml('item', {}, function () { this.text(args[i]); });
             }
         });
     });
@@ -83,11 +85,11 @@ MagentoSoapClient.prototype.categoryLevel = function (categoryId) {
 MagentoSoapClient.prototype.categoryAssignedProducts = function (categoryId) {
     var self = this,
         sessionId = this.sessionId,
-        path = "category.assignedProducts",
+        path = 'category.assignedProducts',
         deferred = $.Deferred();
 
     $.soap({
-        method: "ns1:call",
+        method: 'ns1:call',
         params: {
             sessionId: sessionId,
             resourcePath: path,
@@ -113,22 +115,22 @@ MagentoSoapClient.prototype.categoryAssignedProducts = function (categoryId) {
 MagentoSoapClient.prototype.productInfo = function (productIds) {
     var self = this,
         sessionId = this.sessionId,
-        path = "product.info",
+        path = 'product.info',
         deferred = $.Deferred(),
         body;
 
-    body = xml("ns1:multiCall", {}, function () {
-        this.xml("sessionId", {}, function () { this.text(sessionId); });
-        this.xml("calls", self._xmlUrFixedArrayType(productIds.length), function () {
+    body = xml('ns1:multiCall', {}, function () {
+        this.xml('sessionId', {}, function () { this.text(sessionId); });
+        this.xml('calls', self._xmlUrFixedArrayType(productIds.length), function () {
             for (var i = 0; i < productIds.length; i++) {
-                this.xml("item", self._xmlStringArrayType(2), function () {
+                this.xml('item', self._xmlStringArrayType(2), function () {
                     var id = productIds[i];
-                    this.xml("item", self._xmlStringType(), function () { this.text(path); });
-                    this.xml("item", self._xmlStringType(), function () { this.text(id); });
+                    this.xml('item', self._xmlStringType(), function () { this.text(path); });
+                    this.xml('item', self._xmlStringType(), function () { this.text(id); });
                 });
             }
         });
-        this.xml("options", self._xmlNilType());
+        this.xml('options', self._xmlNilType());
     });
 
     $.soap({
@@ -153,18 +155,18 @@ MagentoSoapClient.prototype.productInfo = function (productIds) {
 MagentoSoapClient.prototype.productMediaList = function (productIds) {
     var self = this,
         sessionId = this.sessionId,
-        path = "product_media.list",
+        path = 'product_media.list',
         deferred = $.Deferred(),
         body;
 
-    body = xml("ns1:multiCall", {}, function () {
-        this.xml("sessionId", {}, function () { this.text(sessionId); });
-        this.xml("calls", self._xmlUrFixedArrayType(productIds.length), function () {
+    body = xml('ns1:multiCall', {}, function () {
+        this.xml('sessionId', {}, function () { this.text(sessionId); });
+        this.xml('calls', self._xmlUrFixedArrayType(productIds.length), function () {
             for (var i = 0; i < productIds.length; i++) {
-                this.xml("item", self._xmlStringArrayType(2), function () {
+                this.xml('item', self._xmlStringArrayType(2), function () {
                     var id = productIds[i];
-                    this.xml("item", self._xmlStringType(), function () { this.text(path); });
-                    this.xml("item", self._xmlIntType(), function () { this.text(id); });
+                    this.xml('item', self._xmlStringType(), function () { this.text(path); });
+                    this.xml('item', self._xmlIntType(), function () { this.text(id); });
                 });
             }
         });
@@ -192,17 +194,17 @@ MagentoSoapClient.prototype.productMediaList = function (productIds) {
 MagentoSoapClient.prototype.productStockList = function (productIds) {
     var self = this,
         sessionId = this.sessionId,
-        path = "product_stock.list",
+        path = 'product_stock.list',
         deferred = $.Deferred(),
         body;
 
-    body = xml("ns1:call", {}, function () {
-        this.xml("sessionId", {}, function () { this.text(sessionId); });
-        this.xml("resourcePath", {}, function () { this.text(path); });
-        this.xml("args", self._xmlArrayType(1), function () {
-            this.xml("item", self._xmlStringArrayType(productIds.length), function () {
+    body = xml('ns1:call', {}, function () {
+        this.xml('sessionId', {}, function () { this.text(sessionId); });
+        this.xml('resourcePath', {}, function () { this.text(path); });
+        this.xml('args', self._xmlArrayType(1), function () {
+            this.xml('item', self._xmlStringArrayType(productIds.length), function () {
                 for (var i = 0; i < productIds.length; i++) {
-                    this.xml("item", self._xmlStringType, function () { this.text(productIds[i]); });
+                    this.xml('item', self._xmlStringType, function () { this.text(productIds[i]); });
                 }
             });
         });
@@ -231,11 +233,11 @@ MagentoSoapClient.prototype.productStockList = function (productIds) {
 MagentoSoapClient.prototype.cartCreate = function () {
     var self = this,
         sessionId = this.sessionId,
-        path = "cart.create",
+        path = 'cart.create',
         deferred = $.Deferred();
 
     $.soap({
-        method: "ns1:call",
+        method: 'ns1:call',
         params: {
             sessionId: sessionId,
             resourcePath: path,
@@ -262,11 +264,11 @@ MagentoSoapClient.prototype.cartCreate = function () {
 MagentoSoapClient.prototype.cartInfo = function (cartId) {
     var self = this,
         sessionId = this.sessionId,
-        path = "cart.info",
+        path = 'cart.info',
         deferred = $.Deferred();
 
     $.soap({
-        method: "ns1:call",
+        method: 'ns1:call',
         params: {
             sessionId: sessionId,
             resourcePath: path,
@@ -292,23 +294,23 @@ MagentoSoapClient.prototype.cartInfo = function (cartId) {
 MagentoSoapClient.prototype.cartCustomerSet = function (cartId, customer) {
     var self = this,
         sessionId = this.sessionId,
-        path = "cart_customer.set",
+        path = 'cart_customer.set',
         deferred = $.Deferred(),
         body;
 
-    body = xml("ns1:call", {}, function () {
-        this.xml("sessionId", {}, function () { this.text(sessionId); });
-        this.xml("resourcePath", {}, function () { this.text(path); });
-        this.xml("args", self._xmlUrArrayType(2), function () {
-            this.xml("item", self._xmlIntType(), function () { this.text(cartId); });
-            this.xml("item", self._xmlMapType(), function () {
+    body = xml('ns1:call', {}, function () {
+        this.xml('sessionId', {}, function () { this.text(sessionId); });
+        this.xml('resourcePath', {}, function () { this.text(path); });
+        this.xml('args', self._xmlUrArrayType(2), function () {
+            this.xml('item', self._xmlIntType(), function () { this.text(cartId); });
+            this.xml('item', self._xmlMapType(), function () {
                 Object.keys(customer).forEach(function (key) {
                     var value = customer[key];
-                    this.xml("item", {}, function () {
-                        this.xml("key", self._xmlStringType(), function () {
+                    this.xml('item', {}, function () {
+                        this.xml('key', self._xmlStringType(), function () {
                             this.text(key);
                         });
-                        this.xml("value", self._xmlStringType(), function () {
+                        this.xml('value', self._xmlStringType(), function () {
                             this.text(value);
                         });
                     });
@@ -339,26 +341,26 @@ MagentoSoapClient.prototype.cartCustomerSet = function (cartId, customer) {
 MagentoSoapClient.prototype.cartCustomerAddresses = function (cartId, addresses) {
     var self = this,
         sessionId = this.sessionId,
-        path = "cart_customer.addresses",
+        path = 'cart_customer.addresses',
         deferred = $.Deferred(),
         body;
 
-    body = xml("ns1:call", {}, function () {
-        this.xml("sessionId", {}, function () { this.text(sessionId); });
-        this.xml("resourcePath", {}, function () { this.text(path); });
-        this.xml("args", self._xmlUrArrayType(2), function () {
-            this.xml("item", self._xmlIntType(), function () { this.text(cartId); });
-            this.xml("item", self._xmlMapArrayType(addresses.length), function () {
+    body = xml('ns1:call', {}, function () {
+        this.xml('sessionId', {}, function () { this.text(sessionId); });
+        this.xml('resourcePath', {}, function () { this.text(path); });
+        this.xml('args', self._xmlUrArrayType(2), function () {
+            this.xml('item', self._xmlIntType(), function () { this.text(cartId); });
+            this.xml('item', self._xmlMapArrayType(addresses.length), function () {
                 addresses.forEach(function (address) {
-                    this.xml("item", self._xmlMapType(), function () {
+                    this.xml('item', self._xmlMapType(), function () {
                         Object.keys(address).forEach(function (key) {
                             var value = address[key];
 
-                            this.xml("item", {}, function () {
-                                this.xml("key", self._xmlStringType(), function () {
+                            this.xml('item', {}, function () {
+                                this.xml('key', self._xmlStringType(), function () {
                                     this.text(key);
                                 });
-                                this.xml("value", self._xmlStringType(), function () {
+                                this.xml('value', self._xmlStringType(), function () {
                                     this.text(value);
                                 });
                             });
@@ -388,35 +390,35 @@ MagentoSoapClient.prototype.cartCustomerAddresses = function (cartId, addresses)
     return deferred.promise();
 };
 
-// products: [{id: "2", qty: 1}]
+// products: [{id: '2', qty: 1}]
 MagentoSoapClient.prototype.cartProductAdd = function (cartId, products) {
     var self = this,
         sessionId = this.sessionId,
-        path = "cart_product.add",
+        path = 'cart_product.add',
         deferred = $.Deferred(),
         body;
 
-    body = xml("ns1:call", {}, function () {
-        this.xml("sessionId", {}, function () { this.text(sessionId); });
-        this.xml("resourcePath", {}, function () { this.text(path); });
-        this.xml("args", self._xmlUrArrayType(2), function () {
-            this.xml("item", self._xmlIntType(), function () { this.text(cartId); });
-            this.xml("item", self._xmlMapArrayType(products.length), function () {
+    body = xml('ns1:call', {}, function () {
+        this.xml('sessionId', {}, function () { this.text(sessionId); });
+        this.xml('resourcePath', {}, function () { this.text(path); });
+        this.xml('args', self._xmlUrArrayType(2), function () {
+            this.xml('item', self._xmlIntType(), function () { this.text(cartId); });
+            this.xml('item', self._xmlMapArrayType(products.length), function () {
                 products.forEach(function (product) {
-                    this.xml("item", self._xmlMapType(), function () {
-                        this.xml("item", {}, function () {
-                            this.xml("key", self._xmlStringType(), function () {
-                                this.text("product_id");
+                    this.xml('item', self._xmlMapType(), function () {
+                        this.xml('item', {}, function () {
+                            this.xml('key', self._xmlStringType(), function () {
+                                this.text('product_id');
                             });
-                            this.xml("value", self._xmlStringType(), function () {
+                            this.xml('value', self._xmlStringType(), function () {
                                 this.text(product.id);
                             });
                         });
-                        this.xml("item", {}, function () {
-                            this.xml("key", self._xmlStringType(), function () {
-                                this.text("qty");
+                        this.xml('item', {}, function () {
+                            this.xml('key', self._xmlStringType(), function () {
+                                this.text('qty');
                             });
-                            this.xml("value", self._xmlIntType(), function () {
+                            this.xml('value', self._xmlIntType(), function () {
                                 this.text(product.qty);
                             });
                         });
@@ -448,11 +450,11 @@ MagentoSoapClient.prototype.cartProductAdd = function (cartId, products) {
 MagentoSoapClient.prototype.cartShippingList = function (cartId) {
     var self = this,
         sessionId = this.sessionId,
-        path = "cart_shipping.list",
+        path = 'cart_shipping.list',
         deferred = $.Deferred();
 
     $.soap({
-        method: "ns1:call",
+        method: 'ns1:call',
         params: {
             sessionId: sessionId,
             resourcePath: path,
@@ -478,16 +480,16 @@ MagentoSoapClient.prototype.cartShippingList = function (cartId) {
 MagentoSoapClient.prototype.cartShippingMethod = function (cartId, method) {
     var self = this,
         sessionId = this.sessionId,
-        path = "cart_shipping.method",
+        path = 'cart_shipping.method',
         deferred = $.Deferred(),
         body;
 
-    body = xml("ns1:call", {}, function () {
-        this.xml("sessionId", {}, function () { this.text(sessionId); });
-        this.xml("resourcePath", {}, function () { this.text(path); });
-        this.xml("args", self._xmlUrArrayType(2), function () {
-            this.xml("item", self._xmlIntType(), function () { this.text(cartId); });
-            this.xml("item", self._xmlStringType(), function () { this.text(method); });
+    body = xml('ns1:call', {}, function () {
+        this.xml('sessionId', {}, function () { this.text(sessionId); });
+        this.xml('resourcePath', {}, function () { this.text(path); });
+        this.xml('args', self._xmlUrArrayType(2), function () {
+            this.xml('item', self._xmlIntType(), function () { this.text(cartId); });
+            this.xml('item', self._xmlStringType(), function () { this.text(method); });
         });
     });
 
@@ -513,11 +515,11 @@ MagentoSoapClient.prototype.cartShippingMethod = function (cartId, method) {
 MagentoSoapClient.prototype.cartPaymentList = function (cartId) {
     var self = this,
         sessionId = this.sessionId,
-        path = "cart_payment.list",
+        path = 'cart_payment.list',
         deferred = $.Deferred();
 
     $.soap({
-        method: "ns1:call",
+        method: 'ns1:call',
         params: {
             sessionId: sessionId,
             resourcePath: path,
@@ -542,21 +544,21 @@ MagentoSoapClient.prototype.cartPaymentList = function (cartId) {
 MagentoSoapClient.prototype.cartPaymentMethod = function (cartId, method) {
     var self = this,
         sessionId = this.sessionId,
-        path = "cart_payment.method",
+        path = 'cart_payment.method',
         deferred = $.Deferred(),
         body;
 
-    body = xml("ns1:call", {}, function () {
-        this.xml("sessionId", {}, function () { this.text(sessionId); });
-        this.xml("resourcePath", {}, function () { this.text(path); });
-        this.xml("args", self._xmlUrArrayType(2), function () {
-            this.xml("item", self._xmlIntType(), function () { this.text(cartId); });
-            this.xml("item", self._xmlMapType(), function () {
-                this.xml("item", {}, function () {
-                    this.xml("key", self._xmlStringType(), function () {
-                        this.text("method");
+    body = xml('ns1:call', {}, function () {
+        this.xml('sessionId', {}, function () { this.text(sessionId); });
+        this.xml('resourcePath', {}, function () { this.text(path); });
+        this.xml('args', self._xmlUrArrayType(2), function () {
+            this.xml('item', self._xmlIntType(), function () { this.text(cartId); });
+            this.xml('item', self._xmlMapType(), function () {
+                this.xml('item', {}, function () {
+                    this.xml('key', self._xmlStringType(), function () {
+                        this.text('method');
                     });
-                    this.xml("value", self._xmlStringType(), function () {
+                    this.xml('value', self._xmlStringType(), function () {
                         this.text(method);
                     });
                 });
@@ -587,11 +589,11 @@ MagentoSoapClient.prototype.cartPaymentMethod = function (cartId, method) {
 MagentoSoapClient.prototype.cartOrder = function (cartId) {
     var self = this,
         sessionId = this.sessionId,
-        path = "cart.order",
+        path = 'cart.order',
         deferred = $.Deferred();
 
     $.soap({
-        method: "ns1:call",
+        method: 'ns1:call',
         params: {
             sessionId: sessionId,
             resourcePath: path,
@@ -634,37 +636,37 @@ MagentoSoapClient.prototype._serialize = function (doc) {
 };
 
 MagentoSoapClient.prototype._xmlNilType = function () {
-    return {"xsi:nil": "true"};
+    return {'xsi:nil': 'true'};
 };
 
 MagentoSoapClient.prototype._xmlIntType = function () {
-    return {"xsi:type": "xsd:int"};
+    return {'xsi:type': 'xsd:int'};
 };
 
 MagentoSoapClient.prototype._xmlStringType = function () {
-    return {"xsi:type": "xsd:string"};
+    return {'xsi:type': 'xsd:string'};
 };
 
 MagentoSoapClient.prototype._xmlMapType = function () {
-    return {"xsi:type": "ns2:Map"};
+    return {'xsi:type': 'ns2:Map'};
 };
 
 MagentoSoapClient.prototype._xmlArrayType = function (length) {
-    return {"SOAP-ENC:arrayType": "SOAP-ENC:Array[" + length + "]", "xsi:type": "SOAP-ENC:Array"};
+    return {'SOAP-ENC:arrayType': 'SOAP-ENC:Array[' + length + ']', 'xsi:type': 'SOAP-ENC:Array'};
 };
 
 MagentoSoapClient.prototype._xmlStringArrayType = function (length) {
-    return {"SOAP-ENC:arrayType": "xsd:string[" + length + "]", "xsi:type": "SOAP-ENC:Array"};
+    return {'SOAP-ENC:arrayType': 'xsd:string[' + length + ']', 'xsi:type': 'SOAP-ENC:Array'};
 };
 
 MagentoSoapClient.prototype._xmlUrArrayType = function (length) {
-    return {"SOAP-ENC:arrayType": "xsd:ur-type[" + length + "]", "xsi:type": "SOAP-ENC:Array"};
+    return {'SOAP-ENC:arrayType': 'xsd:ur-type[' + length + ']', 'xsi:type': 'SOAP-ENC:Array'};
 };
 
 MagentoSoapClient.prototype._xmlUrFixedArrayType = function (length) {
-    return {"SOAP-ENC:arrayType": "xsd:ur-type[" + length + "]", "xsi:type": "ns1:FixedArray"};
+    return {'SOAP-ENC:arrayType': 'xsd:ur-type[' + length + ']', 'xsi:type': 'ns1:FixedArray'};
 };
 
 MagentoSoapClient.prototype._xmlMapArrayType = function (length) {
-    return {"SOAP-ENC:arrayType": "ns2:Map[" + length + "]", "xsi:type": "SOAP-ENC:Array"};
+    return {'SOAP-ENC:arrayType': 'ns2:Map[' + length + ']', 'xsi:type': 'SOAP-ENC:Array'};
 };
