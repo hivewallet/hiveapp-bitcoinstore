@@ -26,43 +26,73 @@ angular.module('hiveBitcoinstoreApp')
                         })
                         .fail(function () { callback(arguments); });
                 },
+                // Fetch product info in parallel to speed it up
                 function (productIds, callback) {
-                    client.productInfo(productIds)
-                        .done(function (result) {
-                            _.each(result, function (item) {
-                                var product = mapper.build(item);
+                    async.parallel([
+                        function (parallelCallback) {
+                            client.productInfo(productIds)
+                                .done(function (result) {
+                                    parallelCallback(null, result);
+                                })
+                                .fail(function () {
+                                    parallelCallback(arguments);
+                                });
+                        },
+                        function (parallelCallback) {
+                            client.productStockList(productIds)
+                                .done(function (result) {
+                                    parallelCallback(null, result);
+                                })
+                                .fail(function () {
+                                    parallelCallback(arguments);
+                                });
+                        },
+                        function (parallelCallback) {
+                            client.productMediaList(productIds)
+                                .done(function (result) {
+                                    parallelCallback(null, result);
+                                })
+                                .fail(function () {
+                                    parallelCallback(arguments);
+                                });
+                        }
+                    ], function (err, results) {
+                        var productInfos, mediaInfos, stockInfos;
+
+                        if (err) {
+                            callback(err);
+                        } else {
+                            productInfos = results[0];
+                            stockInfos = results[1];
+                            mediaInfos = results[2];
+
+                            _.each(productInfos, function (productInfo, index) {
+                                var mediaInfo = mediaInfos[index],
+                                    stockInfo = stockInfos[index],
+                                    product, image, inventory;
+
+                                // Build product
+                                product = mapper.build(productInfo);
+
+                                // Add image info
+                                if (mediaInfo.item) {
+                                    mediaInfo = _.isArray(mediaInfo.item) ? mediaInfo.item[0] : mediaInfo.item,
+                                    image = mapper.build(mediaInfo);
+                                    product.image = image;
+                                }
+
+                                // Add inventory info
+                                inventory = mapper.build(stockInfo);
+                                inventory.is_in_stock = _.contains(["true", "1"], inventory.is_in_stock);
+                                product.inventory = inventory;
+
+                                // Add product to the list
                                 $rootScope.products.push(product);
                             });
-                            callback(null, productIds);
-                        })
-                        .fail(function () { callback(arguments); });
-                },
-                function (productIds, callback) {
-                    client.productMediaList(productIds)
-                        .done(function (result) {
-                            _.each(result, function (item, index) {
-                                if (item.item) {
-                                    var image = _.isArray(item.item) ? item.item[0] : item.item,
-                                        mediaInfo = mapper.build(image);
-                                    $rootScope.products[index].image = mediaInfo;
-                                }
-                            });
-                            callback(null, productIds);
-                        })
-                        .fail(function () { callback(arguments); });
-                },
-                function (productIds, callback) {
-                    client.productStockList(productIds)
-                        .done(function (result) {
-                            _.each(result, function (item, index) {
-                                var stockInfo = mapper.build(item),
-                                    in_stock = stockInfo.is_in_stock;
-                                stockInfo.is_in_stock = in_stock === 'true' || in_stock === '1';
-                                $rootScope.products[index].inventory = stockInfo;
-                            });
+
                             callback(null);
-                        })
-                        .fail(function () { callback(arguments); });
+                        }
+                    });
                 }
             ], function (err) {
                 if (err) {
