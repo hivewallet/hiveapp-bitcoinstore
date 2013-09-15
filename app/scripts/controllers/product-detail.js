@@ -6,12 +6,14 @@ angular.module('hiveBitcoinstoreApp')
 
         $scope.category = $filter('findBy')('category_id', $rootScope.categories, $routeParams.categoryId);
         $scope.product = $filter('findBy')('product_id', $rootScope.products, $routeParams.productId);
+        // TODO convert cart to a service
+        $rootScope.cart = {}; // Reset cart
 
         if (!$scope.category || !$scope.product) {
             $location.path('/');
         }
 
-        $scope.buy = function () {
+        $scope.addProduct = function () {
             bitcoin.getClientInfo(function (clientInfo) {
                 var customer = {
                     firstname: clientInfo.firstname,
@@ -45,7 +47,7 @@ angular.module('hiveBitcoinstoreApp')
                     }
                 ];
 
-                var product = [{
+                var contents = [{
                     id: $scope.product.product_id,
                     qty: 1
                 }];
@@ -61,59 +63,95 @@ angular.module('hiveBitcoinstoreApp')
                     },
                     function (callback) {
                         client.cartCreate()
-                            .done(function (cartId) { callback(null, cartId); })
+                            .done(function (cartId) {
+                                $rootScope.cart.id = cartId;
+                                callback(null, cartId);
+                            })
                             .fail(function () { callback(arguments); });
                     },
                     function (cartId, callback) {
                         client.cartCustomerSet(cartId, customer)
-                            .done(function () { callback(null, cartId); })
+                            .done(function () {
+                                $rootScope.cart.customer = customer;
+                                callback(null, cartId);
+                            })
                             .fail(function () { callback(arguments); });
                     },
                     function (cartId, callback) {
                         client.cartCustomerAddresses(cartId, addresses)
-                            .done(function () { callback(null, cartId); })
+                            .done(function () {
+                                $rootScope.cart.addresses = addresses;
+                                callback(null, cartId);
+                            })
                             .fail(function () { callback(arguments); });
                     },
                     function (cartId, callback) {
-                        client.cartProductAdd(cartId, product)
-                            .done(function () { callback(null, cartId); })
+                        client.cartProductAdd(cartId, contents)
+                            .done(function () {
+                                $rootScope.cart.contents = [{
+                                    product: $scope.product,
+                                    qty: 1
+                                }];
+                                callback(null, cartId);
+                            })
                             .fail(function () { callback(arguments); });
                     },
                     function (cartId, callback) {
                         client.cartShippingList(cartId)
                             .done(function (shippingMethods) {
                                 var shippingMethod;
+
                                 if (shippingMethods.length) {
-                                    shippingMethod = mapper.build(shippingMethods[0]).code;
+                                    shippingMethod = mapper.build(shippingMethods[0]);
                                     callback(null, cartId, shippingMethod);
                                 } else {
+                                    // TODO: provide more meaningful error message
                                     callback({});
                                 }
                             })
                             .fail(function () { callback(arguments); });
                     },
                     function (cartId, shippingMethod, callback) {
-                        client.cartShippingMethod(cartId, shippingMethod)
-                            .done(function () { callback(null, cartId); })
+                        client.cartShippingMethod(cartId, shippingMethod.code)
+                            .done(function () {
+                                $rootScope.cart.shipping = shippingMethod;
+                                callback(null, cartId);
+                            })
                             .fail(function () { callback(arguments); });
                     },
                     function (cartId, callback) {
-                        var paymentMethod = 'checkmo';
+                        var paymentMethod = 'Bitcoins';
                         client.cartPaymentMethod(cartId, paymentMethod)
-                            .done(function () { callback(null, cartId); })
+                            .done(function () {
+                                callback(null, cartId);
+                            })
                             .fail(function () { callback(arguments); });
                     },
                     function (cartId, callback) {
-                        client.cartOrder(cartId)
-                            .done(function (orderId) { callback(null, orderId); })
+                        client.cartInfo(cartId)
+                            .done(function (cartInfo) {
+                                var info = mapper.build(cartInfo);
+                                $rootScope.cart.info = info;
+                                callback(null, info);
+                            })
+                            .fail(function () { callback(arguments); });
+                    },
+                    function (cartInfo, callback) {
+                        client.paymentInfo(cartInfo)
+                            .done(function (paymentInfo) {
+                                $rootScope.cart.payment = paymentInfo;
+                                callback(null);
+                            })
                             .fail(function () { callback(arguments); });
                     }
-                ], function (err, orderId) {
+                ], function (err) {
+                    var product;
+
                     if (err) {
                         $rootScope.errorHandler.apply($rootScope, err);
                     } else {
-                        // Redirect to order summary page
-                        $location.path('/orders/' + orderId).replace();
+                        // Redirect to checkout page
+                        $location.path('/checkout').replace();
                         $scope.$apply(); // Force path change
                     }
                 });

@@ -37,12 +37,12 @@
         </div>
       </div>
       <div class="col-2 product-button">
-        <a ng-click="buy(product.product_id)" ng-disabled="!product.inventory.is_in_stock || loading" class="btn btn-danger">
-          Buy
+        <a ng-click="addProduct(product.product_id)" ng-disabled="!product.inventory.is_in_stock || loading" class="btn btn-danger">
+          Add to cart
         </a>
       </div>
       <div class="col-6 product-info">
-        <span ng-show="loading">We're processing your order. Please wait.</span>
+        <span ng-show="loading">Reticulating splines. Please wait...</span>
       </div>
     </div>
 

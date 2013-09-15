@@ -1,0 +1,61 @@
+<h2>Checkout</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Product name</th>
+      <th>Price</th>
+      <th>Qty</th>
+      <th>Subtotal</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr ng-repeat="content in cart.contents">
+      <td>{{content.product.name}}</td>
+      <td>${{content.product.price | number:2}}</td>
+      <td>{{content.qty}}</td>
+      <td>${{content.product.price | number:2}}</td>
+    </tr>
+  </tbody>
+
+  <tfoot>
+    <tr>
+      <td></td>
+      <td></td>
+      <td>Subtotal</td>
+      <td>${{cart.info.subtotal | number:2}}</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td>{{cart.shipping.method}}</td>
+      <td>${{cart.shipping.price | number:2}}</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td>Tax</td>
+      <td>$?</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td><strong>Grand total</strong></td>
+      <td>
+        <strong>${{cart.info.grand_total | number:2}}</strong>
+        <br>
+        <strong>[{{cart.payment.amount | number}} BTC]</strong>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+
+<div class="col-2">
+  <a ng-click="checkout()" ng-disabled="loading" class="btn btn-danger">
+    Place order
+  </a>
+</div>
+<div class="col-10 info-loading">
+  <span ng-show="loading">Processing your order. Please wait...</span>
+</div

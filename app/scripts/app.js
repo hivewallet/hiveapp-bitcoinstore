@@ -15,6 +15,10 @@ angular.module('hiveBitcoinstoreApp', ['btcstoreFilters'])
             templateUrl: 'views/product-detail.html',
             controller: 'ProductDetailCtrl'
         })
+        .when('/checkout', {
+            templateUrl: 'views/checkout.html',
+            controller: 'CheckoutCtrl'
+        })
         .when('/orders/:orderId', {
             templateUrl: 'views/order-summary.html',
             controller: 'OrderSummaryCtrl'

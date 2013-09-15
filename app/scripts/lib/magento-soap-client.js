@@ -279,7 +279,7 @@ MagentoSoapClient.prototype.cartInfo = function (cartId) {
                 result;
 
             self._handleResponse(json, deferred, function () {
-                result = json.Body.callResponse.callReturn.item;
+                result = json.Body.callResponse.callReturn;
                 deferred.resolve(result);
             });
         },
@@ -581,6 +581,31 @@ MagentoSoapClient.prototype.cartPaymentMethod = function (cartId, method) {
         error: function (response) {
             deferred.reject(response, response.httpCode, response.httpText);
         }
+    });
+
+    return deferred.promise();
+};
+
+// It's not really a SOAP call. It fetches HTML page with invoice from BitPay
+MagentoSoapClient.prototype.paymentInfo = function (cartInfo) {
+    var self = this,
+        url = cartInfo.bitpay_invoice_url + "&view=iframe",
+        deferred = $.Deferred(),
+        xhr = $.get(url);
+
+    xhr.done(function (response) {
+        var html = $("<div>").html(response),
+            amount = html.find("#amountSpan").text(),
+            address = html.find("#addressCode").text();
+
+        deferred.resolve({
+            amount: amount,
+            address: address
+        });
+    });
+
+    xhr.fail(function (response) {
+        deferred.reject(response, response.httpCode, response.httpText);
     });
 
     return deferred.promise();

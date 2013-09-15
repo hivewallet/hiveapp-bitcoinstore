@@ -17,5 +17,9 @@ var bitcoin = bitcoin || {
         };
 
         return callback(info);
+    },
+
+    sendCoins: function (hash, amount, callback) {
+        return callback(true, hash);
     }
 };

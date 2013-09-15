@@ -94,6 +94,11 @@
   font-size: 12px;
 }
 
+/* Checkout */
+.info-loading {
+  line-height: 34px /* Same height as the button */
+}
+
 /* Order summary */
 .order-summary {
   background-color: #f5f5f5;
