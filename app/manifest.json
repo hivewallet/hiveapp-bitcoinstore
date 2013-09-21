@@ -1,8 +1,8 @@
 {
-  "name": "Bitcoinstore",
-  "id": "bitcoinstore",
+  "name": "Bitcoin Store",
+  "id": "Bitcoin Store",
   "version": "1.0",
   "author": "Cowbell Labs",
-  "description": "Hive Bitcoinstore client",
+  "description": "Bitcoin Store",
   "icon": "Icon.png"
 }
