@@ -19,7 +19,8 @@ module.exports = function (grunt) {
     // configurable paths
     var yeomanConfig = {
         app: 'app',
-        dist: 'dist'
+        dist: 'dist',
+        build: 'build'
     };
 
     try {
@@ -98,7 +99,8 @@ module.exports = function (grunt) {
                     src: [
                         '.tmp',
                         '<%= yeoman.dist %>/*',
-                        '!<%= yeoman.dist %>/.git*'
+                        '!<%= yeoman.dist %>/.git*',
+                        '<%= yeoman.build %>/*'
                     ]
                 }]
             },
@@ -286,6 +288,19 @@ module.exports = function (grunt) {
                     ]
                 }
             }
+        },
+        compress: {
+            dist: {
+                options: {
+                    mode: 'zip',
+                    archive: 'build/bitcoinstore.hiveapp'
+                },
+                files: [{
+                    expand: true,
+                    cwd: 'dist/',
+                    src: ['**']
+                }]
+            }
         }
     });
 
@@ -321,7 +336,8 @@ module.exports = function (grunt) {
         'cssmin',
         'uglify',
         'rev',
-        'usemin'
+        'usemin',
+        'compress'
     ]);
 
     grunt.registerTask('default', [

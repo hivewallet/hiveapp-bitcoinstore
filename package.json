@@ -1,6 +1,7 @@
 {
   "name": "hive-bitcoinstore",
   "version": "0.0.0",
+  "repository": "https://bitbucket.org/concept/hive-bitcoinstore.git",
   "dependencies": {
     "karma-script-launcher": "~0.1.0",
     "karma-chrome-launcher": "~0.1.0",
@@ -36,7 +37,8 @@
     "matchdep": "~0.1.2",
     "connect-livereload": "~0.2.0",
     "grunt-google-cdn": "~0.2.0",
-    "grunt-ngmin": "~0.0.2"
+    "grunt-ngmin": "~0.0.2",
+    "grunt-contrib-compress": "~0.5.2"
   },
   "engines": {
     "node": ">=0.8.0"
