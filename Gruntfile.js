@@ -45,6 +45,7 @@ module.exports = function (grunt) {
                 files: [
                     '<%= yeoman.app %>/{,*/}*.html',
                     '{.tmp,<%= yeoman.app %>}/styles/{,*/}*.css',
+                    'config/*.json',
                     '{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js',
                     '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
                 ]
@@ -105,6 +106,23 @@ module.exports = function (grunt) {
                 }]
             },
             server: '.tmp'
+        },
+        ngconstant: {
+            options: {
+                space: '  '
+            },
+            development: [{
+                dest: '<%= yeoman.app %>/scripts/env-config.js',
+                wrap: '"use strict";\n\n <%= __ngModule %>',
+                name: 'envConfig',
+                constants: grunt.file.readJSON("config/development.json")
+            }],
+            production: [{
+                dest: '<%= yeoman.dist %>/scripts/env-config.js',
+                wrap: '"use strict";\n\n <%= __ngModule %>',
+                name: 'envConfig',
+                constants: grunt.file.readJSON("config/production.json")
+            }]
         },
         jshint: {
             options: {
@@ -311,6 +329,7 @@ module.exports = function (grunt) {
 
         grunt.task.run([
             'clean:server',
+            'ngconstant:development',
             'concurrent:server',
             'connect:livereload',
             'open',
@@ -320,6 +339,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', [
         'clean:server',
+        'ngconstant:development',
         'concurrent:test',
         'connect:test',
         'karma'
@@ -327,6 +347,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', [
         'clean:dist',
+        'ngconstant:production',
         'useminPrepare',
         'concurrent:dist',
         'concat',

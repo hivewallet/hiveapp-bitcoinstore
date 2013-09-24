@@ -1,8 +1,13 @@
 'use strict';
 
-angular.module('hiveBitcoinstoreApp', ['btcstoreFilters'])
-    .config(function ($routeProvider) {
-        $routeProvider
+var App = angular.module('hiveBitcoinstoreApp', [
+    'btcstore.filters',
+    'btcstore.controllers',
+    'envConfig'
+]);
+
+App.config(function ($routeProvider) {
+    $routeProvider
         .when('/', {
             templateUrl: 'views/category-list.html',
             controller: 'CategoryListCtrl'
@@ -26,10 +31,14 @@ angular.module('hiveBitcoinstoreApp', ['btcstoreFilters'])
         .otherwise({
             redirectTo: '/'
         });
-    })
-    .run(function ($rootScope) {
-        $rootScope.errorHandler = function (response, status, error) {
-            $rootScope.btcStoreServerError = error;
-            $rootScope.$apply();
-        };
     });
+
+
+App.run(function ($rootScope) {
+    $rootScope.errorHandler = function (response, status, error) {
+        $rootScope.btcStoreServerError = error;
+        $rootScope.$apply();
+    };
+});
+
+angular.module('btcstore.controllers', []);

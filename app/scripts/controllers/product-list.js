@@ -1,8 +1,19 @@
 'use strict';
 
-angular.module('hiveBitcoinstoreApp')
-    .controller('ProductListCtrl', function ($scope, $rootScope, $routeParams, $location, $filter, config, mapper) {
-        var client = new MagentoSoapClient(config.storeUrl);
+angular.module('btcstore.controllers')
+
+.controller('ProductListCtrl', [
+    '$scope',
+    '$rootScope',
+    '$routeParams',
+    '$location',
+    '$filter',
+    'mapper',
+    'API_SERVER',
+    'API_USERNAME',
+    'API_PASSWORD',
+    function ($scope, $rootScope, $routeParams, $location, $filter, mapper, API_SERVER, API_USERNAME, API_PASSWORD) {
+        var client = new MagentoSoapClient(API_SERVER);
 
         $scope.category = $filter('findBy')('category_id', $rootScope.categories, $routeParams.categoryId);
         $rootScope.products = [];
@@ -11,7 +22,7 @@ angular.module('hiveBitcoinstoreApp')
         if ($scope.category) {
             async.waterfall([
                 function (callback) {
-                    client.login(config.storeUsername, config.storePassword)
+                    client.login(API_USERNAME, API_PASSWORD)
                         .done(function () { callback(null); })
                         .fail(function () { callback(arguments); });
                 },
@@ -104,4 +115,4 @@ angular.module('hiveBitcoinstoreApp')
         } else {
             $location.path('/');
         }
-    });
+    }]);

@@ -3,3 +3,8 @@ tmp
 dist
 build
 app/bower_components
+
+# Custom configuration
+config/development.json
+config/production.json
+app/scripts/env-config.js

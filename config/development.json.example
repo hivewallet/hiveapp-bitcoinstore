@@ -1,0 +1,7 @@
+{
+  "ENV": "development",
+  "API_SERVER": "",
+  "API_USERNAME": "",
+  "API_PASSWORD": "",
+  "ROOT_CATEGORY_ID": ""
+}

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('btcstoreFilters', [])
+angular.module('btcstore.filters', [])
     .filter('inStock', function () {
         return function (input) {
             return input ? 'In stock' : 'Out of stock';

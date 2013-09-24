@@ -1,14 +1,24 @@
 'use strict';
 
-angular.module('hiveBitcoinstoreApp')
-    .controller('CheckoutCtrl', function ($scope, $rootScope, $routeParams, $location, $filter, config) {
+angular.module('btcstore.controllers')
+
+.controller('CheckoutCtrl', [
+    '$scope',
+    '$rootScope',
+    '$routeParams',
+    '$location',
+    '$filter',
+    'API_SERVER',
+    'API_USERNAME',
+    'API_PASSWORD',
+    function ($scope, $rootScope, $routeParams, $location, $filter, API_SERVER, API_USERNAME, API_PASSWORD) {
         if (!$rootScope.cart) {
             $location.path('/').replace();
             $scope.$apply(); // Force path change
             return;
         }
 
-        var client = new MagentoSoapClient(config.storeUrl),
+        var client = new MagentoSoapClient(API_SERVER),
             cart = $rootScope.cart,
             product = cart.contents[0].product;
 
@@ -30,7 +40,7 @@ angular.module('hiveBitcoinstoreApp')
 
                     // async.waterfall([
                     //     function (callback) {
-                    //         client.login(config.storeUsername, config.storePassword)
+                    //         client.login(API_USERNAME, API_PASSWORD)
                     //             .done(function () { callback(null); })
                     //             .fail(function () { callback(arguments); });
                     //     },
@@ -54,4 +64,4 @@ angular.module('hiveBitcoinstoreApp')
                 }
             });
         };
-    });
+    }]);
