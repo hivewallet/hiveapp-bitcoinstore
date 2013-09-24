@@ -60,6 +60,7 @@ angular.module('btcstore.controllers')
                     //     }
                     // });
                 } else {
+                    $scope.loading = false;
                     $rootScope.errorHandler.apply($rootScope, [{}, 0, ""]);
                 }
             });

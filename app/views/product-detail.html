@@ -36,13 +36,13 @@
           <strong>&#36;{{product.price | number:2}}</strong>
         </div>
       </div>
-      <div class="col-2 product-button">
+      <div class="col-4 product-button">
         <a ng-click="addProduct(product.product_id)" ng-disabled="!product.inventory.is_in_stock || loading" class="btn btn-danger">
           Add to cart
         </a>
       </div>
-      <div class="col-6 product-info">
-        <span ng-show="loading">Reticulating splines. Please wait...</span>
+      <div class="col-4 product-info">
+        <span ng-show="loading">Please wait...</span>
       </div>
     </div>
 
