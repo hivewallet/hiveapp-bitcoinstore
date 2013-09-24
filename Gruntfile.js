@@ -91,6 +91,9 @@ module.exports = function (grunt) {
         open: {
             server: {
                 url: 'http://localhost:<%= connect.options.port %>'
+            },
+            install: {
+                file: '<%= yeoman.build %>/bitcoinstore.hiveapp'
             }
         },
         clean: {
@@ -359,6 +362,11 @@ module.exports = function (grunt) {
         'rev',
         'usemin',
         'compress'
+    ]);
+
+    grunt.registerTask('install', [
+        'build',
+        'open:install'
     ]);
 
     grunt.registerTask('default', [
