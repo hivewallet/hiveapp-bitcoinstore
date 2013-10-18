@@ -32,8 +32,9 @@ angular.module('btcstore.controllers')
 
             // Remove error message if there already is any
             $rootScope.errorHandler.apply($rootScope);
-            console.log(payment);
-            bitcoin.sendMoney(payment.address, payment.amount, function (success, hash) {
+
+            var temp_pay = btc_string_to_satoshi(payment.amount, '.');
+            bitcoin.sendMoney(payment.address, temp_pay, function (success, hash) {
                 if (success) {
                     async.waterfall([
                         function (callback) {

@@ -3,10 +3,8 @@ var bitcoin = bitcoin || {
     MBTC_IN_SATOSHI: 100000,
     UBTC_IN_SATOSHI: 100,
 
-    TX_TYPE: {
-        TX_TYPE_INCOMING: 0,
-        TX_TYPE_OUTGOING: 1
-    },
+    TX_TYPE_INCOMING: "incoming",
+    TX_TYPE_OUTGOING: "outgoing",
 
     sendMoney: function(hash, amount, callback){
         if (!hash){
