@@ -25,7 +25,7 @@ angular.module('btcstore.controllers')
         }
 
         $scope.addProduct = function () {
-            bitcoin.getClientInfo(function (clientInfo) {
+            bitcoin.getUserInfo(function (clientInfo) {
                 var customer = {
                     firstname: clientInfo.firstname,
                     lastname:  clientInfo.lastname,
