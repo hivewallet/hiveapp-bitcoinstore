@@ -25,10 +25,10 @@ angular.module('btcstore.controllers')
         }
 
         $scope.addProduct = function () {
-            bitcoin.getClientInfo(function (clientInfo) {
+            bitcoin.getUserInfo(function (clientInfo) {
                 var customer = {
-                    firstname: clientInfo.firstname,
-                    lastname:  clientInfo.lastname,
+                    firstname: clientInfo.firstName,
+                    lastname:  clientInfo.lastName,
                     email:     clientInfo.email,
                     mode:      'guest'
                 };
@@ -38,23 +38,23 @@ angular.module('btcstore.controllers')
                         mode:       'shipping',
                         firstname:  clientInfo.firstname,
                         lastname:   clientInfo.lastname,
-                        street:     clientInfo.street,
-                        city:       clientInfo.city,
-                        region_id:  43, // missing
-                        postcode:   clientInfo.zipcode,
-                        country_id: 'US', // missing
-                        telephone:  '0' // missing
+                        street:     '', // TODO add localstorage
+                        city:       '', // TODO add localstorage
+                        region_id:  43, // missing TODO localstorage
+                        postcode:   '', // TODO add localstorage
+                        country_id: 'US', // missing TODO localstorage
+                        telephone:  '0' // missing TODO localstorage
                     },
                     {
                         mode:       'billing',
                         firstname:  clientInfo.firstname,
                         lastname:   clientInfo.lastname,
-                        street:     clientInfo.street,
-                        city:       clientInfo.city,
-                        region_id:  43, // missing
-                        postcode:   clientInfo.zipcode,
-                        country_id: 'US', // missing
-                        telephone:  '0' // missing
+                        street:     '', // TODO add localstorage
+                        city:       '', // TODO add localstorage
+                        region_id:  43, // missing TODO localstorage
+                        postcode:   '', // TODO add localstorage
+                        country_id: 'US', // missing TODO localstorage
+                        telephone:  '0' // missing TODO localstorage
                     }
                 ];
 

@@ -32,8 +32,8 @@ angular.module('btcstore.controllers')
 
             // Remove error message if there already is any
             $rootScope.errorHandler.apply($rootScope);
-
-            bitcoin.sendCoins(payment.address, payment.amount, function (success, hash) {
+            console.log(payment);
+            bitcoin.sendMoney(payment.address, payment.amount, function (success, hash) {
                 if (success) {
                     async.waterfall([
                         function (callback) {
