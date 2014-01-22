@@ -1,6 +1,6 @@
 {
-  "name": "Bitcoin Store",
-  "id": "bitcoinstore",
+  "name": "Bitcoinstore",
+  "id": "com.hivewallet.bitcoinstore",
   "version": "1.0",
   "author": "Cowbell Labs",
   "description": "Bitcoin Store",
