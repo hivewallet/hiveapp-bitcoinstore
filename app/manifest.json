@@ -1,7 +1,7 @@
 {
   "name": "Bitcoinstore",
   "id": "com.hivewallet.bitcoinstore",
-  "version": "1.0",
+  "version": "1.0.1",
   "author": "Cowbell Labs",
   "description": "Purchase all kinds of electronics with Bitcoin",
   "icon": "Icon.png"
